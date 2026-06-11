@@ -189,7 +189,7 @@
             <div class="form-group row">
                 <div class="col-md-6">
                     <label for="no_of_sisters">{{translate('Sibling')}}</label>
-                    <input type="text" name="no_of_sisters" value="{{ $member->families->no_of_sisters ?? "" }}" class="form-control" placeholder="{{translate('No of Sisters')}}">
+                    <input type="text" name="no_of_sisters" value="{{ $member->families->no_of_sisters ?? "" }}" class="form-control" placeholder="{{translate('No. of Siblings')}}">
                     @error('sibling')
                         <small class="form-text text-danger">{{ $message }}</small>
                     @enderror
