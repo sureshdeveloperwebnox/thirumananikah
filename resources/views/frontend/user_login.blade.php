@@ -16,21 +16,15 @@
                             @csrf
                             <div class="form-group">
                                 <label class="form-label" for="email">
-                                    {{ addon_activation('otp_system') ? translate('Email/Phone') : translate('Email') }}
+                                    {{ translate('Email / Phone') }}
                                 </label>
-                                @if (addon_activation('otp_system'))
-                                    <input type="text" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{ translate('Email Or Phone')}}" name="email" id="email">
-                                @else
-                                    <input type="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{  translate('Email') }}" name="email" id="email">
-                                    @if ($errors->has('email'))
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
-                                    @endif
+                                <input type="text" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{ translate('Email Or Phone') }}" name="email" id="email" required>
+                                @if ($errors->has('email'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
                                 @endif
-                                @if (addon_activation('otp_system'))
-                                    <span class="opacity-60">{{ translate('Use country code before number') }}</span>
-                                @endif
+                                <span class="opacity-60 fs-10">{{ translate('Use country code before number (e.g. +91...)') }}</span>
                             </div>
 
                              <div class="form-group">
