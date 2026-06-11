@@ -1,6 +1,30 @@
 @extends('admin.layouts.app')
 
 @section('content')
+    <style>
+        @media (max-width: 767.98px) {
+            .nav-pills-mobile-scroll {
+                flex-wrap: nowrap !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 8px;
+                margin-bottom: 15px;
+                border-bottom: 1px solid #dee2e6;
+            }
+            .nav-pills-mobile-scroll::-webkit-scrollbar {
+                height: 4px;
+            }
+            .nav-pills-mobile-scroll::-webkit-scrollbar-thumb {
+                background: #ccc;
+                border-radius: 4px;
+            }
+            .nav-pills-mobile-scroll .nav-link {
+                white-space: nowrap;
+                margin-right: 5px;
+                padding: 8px 16px;
+            }
+        }
+    </style>
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -9,8 +33,8 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-3">
-                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
+                        <div class="col-md-3 col-12">
+                            <div class="nav flex-row flex-md-column nav-pills nav-pills-mobile-scroll" id="v-pills-tab" role="tablist"
                                 aria-orientation="vertical">
                                 <a class="nav-link active" id="v-pills-tab-1" data-toggle="pill" href="#introduction"
                                     role="tab" aria-controls="v-pills-home"
@@ -96,7 +120,7 @@
 
                             </div>
                         </div>
-                        <div class="col-9">
+                        <div class="col-md-9 col-12">
                             <div class="tab-content" id="v-pills-tabContent">
                                 <div class="tab-pane fade show active" id="introduction" role="tabpanel"
                                     aria-labelledby="v-pills-tab-1">
