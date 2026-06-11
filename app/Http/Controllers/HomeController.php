@@ -147,6 +147,8 @@ class HomeController extends Controller
             $similar_profiles = $similar_profiles->get();
 
             return view('frontend.member.dashboard', compact('similar_profiles'));
+        } elseif ($user->user_type == 'admin' || $user->user_type == 'staff') {
+            return redirect()->route('admin.dashboard');
         } else {
             abort(404);
         }
