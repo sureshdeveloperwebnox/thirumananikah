@@ -1749,7 +1749,7 @@
                                                                     <th class="py-1">{{ translate('Sibling') }}
                                                                     </th>
                                                                     <td class="py-1">
-                                                                        {{ $user->families->sibling ?? '' }}
+                                                                        {{ !empty($user->families) ? ($user->families->no_of_sisters ?? $user->families->sibling) : '' }}
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
