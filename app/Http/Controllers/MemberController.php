@@ -415,7 +415,7 @@ class MemberController extends Controller
 
         if ($request->has('mothere_tongue') || $request->has('known_languages')) {
             $member->mothere_tongue  = $request->mothere_tongue;
-            $member->known_languages = $request->known_languages;
+            $member->known_languages = !empty($request->known_languages) ? json_encode($request->known_languages) : null;
         }
 
         if ($member->save()) {
@@ -457,7 +457,7 @@ class MemberController extends Controller
     {
         $member                     = Member::where('user_id', $request->id)->first();
         $member->mothere_tongue     = $request->mothere_tongue;
-        $member->known_languages    = $request->known_languages;
+        $member->known_languages    = !empty($request->known_languages) ? json_encode($request->known_languages) : null;
 
         if ($member->save()) {
             flash('Member language info has been updated successfully')->success();

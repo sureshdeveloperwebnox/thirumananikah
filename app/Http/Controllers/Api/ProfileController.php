@@ -270,7 +270,7 @@ class ProfileController extends Controller
         $member  = Member::where('user_id', auth()->id())->first();
         if ($member) {
             $member->mothere_tongue     = $request->mothere_tongue;
-            $member->known_languages    = $request->known_languages;
+            $member->known_languages    = !empty($request->known_languages) ? json_encode($request->known_languages) : null;
             $member->save();
             return $this->success_message('Member language info has been updated successfully');
         }
