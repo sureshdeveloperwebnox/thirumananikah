@@ -33,41 +33,16 @@
         </div>
     </div>
 
-    <!-- Email Change -->
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0 h6">{{ translate('Change your email')}}</h5>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('user.change.email') }}" method="POST">
-                @csrf
-                <div class="row">
-                    <div class="col-md-2">
-                        <label>{{ translate('Your Email') }}</label>
-                    </div>
-                    <div class="col-md-10">
-                        <div class="input-group mb-3">
-                          <input type="email" class="form-control" placeholder="{{ translate('Your Email')}}" name="email" value="{{ Auth::user()->email }}" />
-                          <div class="input-group-append">
-                             <button type="button" class="btn btn-outline-secondary new-email-verification">
-                                 <span class="d-none loading">
-                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                     {{ translate('Sending Email...') }}
-                                 </span>
-                                 <span class="default">{{ translate('Verify') }}</span>
-                             </button>
-                          </div>
-                        </div>
-                        <div class="form-group mb-0 text-right">
-                            <button type="submit" class="btn btn-sm btn-primary">{{translate('Update')}}</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+
 
     <!-- Basic Information -->
+    @php
+        $permanent_address      = \App\Models\Address::where('type','permanent')->where('user_id',$member->id)->first();
+        $permanent_country_id   = $permanent_address->country_id ?? "";
+        $permanent_state_id     = $permanent_address->state_id ?? "";
+        $permanent_city_id      = $permanent_address->city_id ?? "";
+        $permanent_postal_code  = $permanent_address->postal_code ?? "";
+    @endphp
     @include('frontend.member.profile.basic_info')
 
     <!-- Present Address -->
@@ -97,10 +72,10 @@
       @include('frontend.member.profile.physical_attributes')
     @endif
 
-    <!-- Language -->
+    {{-- <!-- Language -->
     @if(get_setting('member_language_section') == 'on')
       @include('frontend.member.profile.language')
-    @endif
+    @endif --}}
 
     <!-- Hobbies  -->
     @if(get_setting('member_hobbies_and_interests_section') == 'on')
@@ -137,17 +112,10 @@
       @include('frontend.member.profile.astronomic_information')
     @endif
 
-    <!-- Permanent Address -->
-    @php
-        $permanent_address      = \App\Models\Address::where('type','permanent')->where('user_id',$member->id)->first();
-        $permanent_country_id   = $permanent_address->country_id ?? "";
-        $permanent_state_id     = $permanent_address->state_id ?? "";
-        $permanent_city_id      = $permanent_address->city_id ?? "";
-        $permanent_postal_code  = $permanent_address->postal_code ?? "";
-    @endphp
+    {{-- <!-- Permanent Address -->
     @if(get_setting('member_permanent_address_section') == 'on')
       @include('frontend.member.profile.permanent_address')
-    @endif
+    @endif --}}
 
     <!-- Family Information -->
     @if(get_setting('member_family_information_section') == 'on')

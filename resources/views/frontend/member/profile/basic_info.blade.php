@@ -75,6 +75,27 @@
                     @enderror
                 </div>
             </div>
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <label>{{ translate('Your Email') }}</label>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="{{ translate('Your Email')}}" name="email" value="{{ $member->email }}" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-secondary new-email-verification">
+                                <span class="d-none loading">
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    {{ translate('Sending Email...') }}
+                                </span>
+                                <span class="default">{{ translate('Verify') }}</span>
+                            </button>
+                        </div>
+                    </div>
+                    @error('email')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+            </div>
             <div class="form-group row">
                 <div class="col-md-6">
                     <label for="first_name" >{{translate('Marital  Status')}}
@@ -116,7 +137,82 @@
                     </div>
                 </div>
             </div>
-            <div class="text-right">
+            
+            <hr>
+            <h5 class="mb-3 h6">{{translate('Language')}}</h5>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="mothere_tongue">Mother Tongue</label>
+                    <select class="form-control aiz-selectpicker" name="mothere_tongue" data-selected="{{ $member->member->mothere_tongue }}" data-live-search="true">
+                        <option value="">{{translate('Select One')}}</option>
+                        @foreach ($languages as $language)
+                            <option value="{{$language->id}}"> {{ $language->name }} </option>
+                        @endforeach
+                    </select>
+                    @error('mothere_tongue')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label for="known_languages">{{translate('Known Languages')}}</label>
+                    @php $known_languages = !empty($member->member->known_languages) ? json_decode($member->member->known_languages) : [] ; @endphp
+                    <select class="form-control aiz-selectpicker" name="known_languages[]" data-live-search="true" multiple>
+                        <option value="">{{translate('Select')}}</option>
+                        @foreach ($languages as $language)
+                            <option value="{{$language->id}}" @if(in_array($language->id, $known_languages)) selected @endif >{{ $language->name }} </option>
+                        @endforeach
+                    </select>
+                    @error('known_languages')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+            </div>
+
+            <hr>
+            <h5 class="mb-3 h6">{{translate('Permanent Address')}}</h5>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="permanent_country_id">{{translate('Country')}}</label>
+                    <select class="form-control aiz-selectpicker" name="permanent_country_id" id="permanent_country_id" data-selected="{{ $permanent_country_id }}" data-live-search="true" required>
+                        <option value="">{{translate('Select One')}}</option>
+                        @foreach ($countries as $country)
+                            <option value="{{$country->id}}">{{$country->name}}</option>
+                        @endforeach
+                    </select>
+                    @error('permanent_country_id')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label for="permanent_state_id">{{translate('State')}}</label>
+                    <select class="form-control aiz-selectpicker" name="permanent_state_id" id="permanent_state_id" data-live-search="true" required>
+
+                    </select>
+                    @error('permanent_state_id')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="permanent_city_id">{{translate('City')}}</label>
+                    <select class="form-control aiz-selectpicker" name="permanent_city_id" id="permanent_city_id" data-live-search="true" required>
+
+                    </select>
+                    @error('permanent_city_id')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label for="permanent_postal_code">{{translate('Postal Code')}}</label>
+                    <input type="text" name="permanent_postal_code" value="{{$permanent_postal_code}}" class="form-control" placeholder="{{translate('Postal Code')}}" required>
+                    @error('permanent_postal_code')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="text-right mt-3">
                 <button type="submit" class="btn btn-primary btn-sm">{{translate('Update')}}</button>
             </div>
         </form>

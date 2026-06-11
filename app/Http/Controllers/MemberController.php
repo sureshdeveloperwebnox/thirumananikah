@@ -372,6 +372,33 @@ class MemberController extends Controller
         $user->first_name   = $request->first_name;
         $user->last_name    = $request->last_name;
 
+        if ($request->has('email') && $request->email != $user->email) {
+            $email = $request->email;
+            if (User::where('email', $email)->count() > 0) {
+                flash(translate('Email already exists!'))->warning();
+                return back();
+            }
+
+            $verification_code = \Illuminate\Support\Str::random(32);
+
+            $array['subject'] = 'Email Verification';
+            $array['from'] = env('MAIL_USERNAME');
+            $array['content'] = 'Verify your account';
+            $array['link'] = route('email_change.callback') . '?new_email_verificiation_code=' . $verification_code . '&email=' . $email;
+            $array['sender'] = Auth::user()->name;
+            $array['details'] = "Email Second";
+
+            $user->new_email_verificiation_code = $verification_code;
+
+            try {
+                \Illuminate\Support\Facades\Mail::to($email)->queue(new \App\Mail\SecondEmailVerifyMailManager($array));
+                flash(translate('A verification mail has been sent to the new email address.'))->success();
+            } catch (\Exception $e) {
+                flash($e->getMessage())->error();
+                return back();
+            }
+        }
+
         if (get_setting('profile_picture_approval_by_admin') && $request->photo != $user->photo && auth()->user()->user_type == 'member') {
             $user->photo_approved = 0;
         }
@@ -386,7 +413,26 @@ class MemberController extends Controller
         $member->marital_status_id  = is_array($request->marital_status) ? ($request->marital_status[0] ?? null) : $request->marital_status;
         $member->children           = is_numeric($request->children) ? $request->children : null;
 
+        if ($request->has('mothere_tongue') || $request->has('known_languages')) {
+            $member->mothere_tongue  = $request->mothere_tongue;
+            $member->known_languages = $request->known_languages;
+        }
+
         if ($member->save()) {
+            if ($request->has('permanent_country_id')) {
+                $address = Address::where('user_id', $request->id)->where('type', 'permanent')->first();
+                if (empty($address)) {
+                    $address = new Address;
+                    $address->user_id = $request->id;
+                    $address->type = 'permanent';
+                }
+                $address->country_id   = $request->permanent_country_id;
+                $address->state_id     = $request->permanent_state_id;
+                $address->city_id      = $request->permanent_city_id;
+                $address->postal_code  = $request->permanent_postal_code;
+                $address->save();
+            }
+
             flash('Member basic info  has been updated successfully')->success();
             return back();
         }
