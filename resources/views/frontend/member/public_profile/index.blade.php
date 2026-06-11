@@ -136,6 +136,16 @@
                 margin-top: -260px
             }
         }
+        #profile-accordion table tr td, #profile-accordion table tr th {
+            font-weight: 700 !important;
+            font-size: 13px !important;
+        }
+        #profile-accordion table tr td:first-child, #profile-accordion table tr th {
+            color: #000 !important;
+        }
+        #profile-accordion table tr td:last-child {
+            color: var(--primary) !important;
+        }
     </style>
     <section class="py-5 bg-white">
         <div class="container">
@@ -2372,5 +2382,25 @@
                 }
             );
         }
+        $(document).ready(function() {
+            $('#profile-accordion table tr').each(function() {
+                var cells = $(this).find('td, th');
+                if (cells.length === 2) {
+                    // Format label
+                    var labelNode = cells.eq(0).find('span').length ? cells.eq(0).find('span') : cells.eq(0);
+                    var labelText = labelNode.text().trim();
+                    if (labelText) {
+                        labelNode.text(labelText.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); }));
+                    }
+
+                    // Format value
+                    var valueNode = cells.eq(1).find('span').length ? cells.eq(1).find('span') : cells.eq(1);
+                    var valueText = valueNode.text().trim();
+                    if (valueText) {
+                        valueNode.text(valueText.replace(/_/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); }));
+                    }
+                }
+            });
+        });
     </script>
 @endsection
