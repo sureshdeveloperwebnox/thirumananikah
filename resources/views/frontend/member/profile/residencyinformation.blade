@@ -1,0 +1,79 @@
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0 h6">{{translate('Residency Information')}}</h5>
+    </div>
+    <div class="card-body">
+      <form action="{{ route('recidencies.update', $member->id) }}" method="POST">
+          <input name="_method" type="hidden" value="PATCH">
+          @csrf
+          @php
+              $birth_country_id = $member->recidency->birth_country_id ?? "";
+              $recidency_country_id = $member->recidency->recidency_country_id ?? "";
+              $growup_country_id = $member->recidency->growup_country_id ?? "";
+          @endphp
+          <div class="form-group row">
+              <div class="col-md-6">
+                  <label for="birth_country_id">{{translate('Birth Country')}}</label>
+                  <select class="form-control aiz-selectpicker" name="birth_country_id" data-selected="{{ $birth_country_id }}" data-live-search="true">
+                      @foreach ($countries as $country)
+                          <option value="{{$country->id}}">{{$country->name}}</option>
+                      @endforeach
+                  </select>
+              </div>
+              <div class="col-md-6">
+                  <label for="recidency_country_id">{{translate('Residency Country')}}</label>
+                  <select class="form-control aiz-selectpicker" name="recidency_country_id" data-selected="{{ $recidency_country_id }}" data-live-search="true">
+                      @foreach ($countries as $country)
+                          <option value="{{$country->id}}" >{{$country->name}}</option>
+                      @endforeach
+                  </select>
+              </div>
+          </div>
+          <div class="form-group row">
+              
+             <div class="col-md-6">
+                <label for="immigration_status">{{translate('Immigration Status')}}</label>
+                <select id="immigration_status" name="immigration_status" class="form-control">
+                    <option value="" disabled selected>{{ translate('Select Immigration Status') }}</option>
+                    <option value="Citizen" {{ isset($member->recidency) && $member->recidency->immigration_status == 'Citizen' ? 'selected' : '' }}>Citizen</option>
+                    <option value="Permanent Resident Visa" {{ isset($member->recidency) && $member->recidency->immigration_status == 'Permanent Resident Visa' ? 'selected' : '' }}>Permanent Resident Visa</option>
+                    <option value="Work Visa" {{ isset($member->recidency) && $member->recidency->immigration_status == 'Work Visa' ? 'selected' : '' }}>Work Visa</option>
+                    <option value="Skilled Worker Visa" {{ isset($member->recidency) && $member->recidency->immigration_status == 'Skilled Worker Visa' ? 'selected' : '' }}>Skilled Worker Visa</option>
+                    <option value="Naturalization Visa" {{ isset($member->recidency) && $member->recidency->immigration_status == 'Naturalization Visa' ? 'selected' : '' }}>Naturalization Visa</option>
+                    <option value="Family-Sponsored Visa" {{ isset($member->recidency) && $member->recidency->immigration_status == 'Family-Sponsored Visa' ? 'selected' : '' }}>Family-Sponsored Visa</option>
+                    <option value="Marriage Visa" {{ isset($member->recidency) && $member->recidency->immigration_status == 'Marriage Visa' ? 'selected' : '' }}>Marriage Visa</option>
+                    <option value="Business Visa" {{ isset($member->recidency) && $member->recidency->immigration_status == 'Business Visa' ? 'selected' : '' }}>Business Visa</option>
+                    <option value="Investor Visa" {{ isset($member->recidency) && $member->recidency->immigration_status == 'Investor Visa' ? 'selected' : '' }}>Investor Visa</option>
+                    <option value="Asylum Visa" {{ isset($member->recidency) && $member->recidency->immigration_status == 'Asylum Visa' ? 'selected' : '' }}>Asylum Visa</option>
+                    <option value="Refugee Visa" {{ isset($member->recidency) && $member->recidency->immigration_status == 'Refugee Visa' ? 'selected' : '' }}>Refugee Visa</option>
+                    <option value="Visit Visa" {{ isset($member->recidency) && $member->recidency->immigration_status == 'Visit Visa' ? 'selected' : '' }}>Visit Visa</option>
+                </select>
+            
+                @error('immigration_status')
+                    <small class="form-text text-danger">{{ $message }}</small>
+                @enderror
+            </div>
+
+              <!--<div class="col-md-6">-->
+              <!--    <label for="growup_country_id">{{translate('Grow up Country')}}</label>-->
+              <!--    <select class="form-control aiz-selectpicker" name="growup_country_id" data-selected="{{ $growup_country_id }}" data-live-search="true">-->
+              <!--        @foreach ($countries as $country)-->
+              <!--            <option value="{{$country->id}}">{{$country->name}}</option>-->
+              <!--        @endforeach-->
+              <!--    </select>-->
+              <!--</div>-->
+              <!--<div class="col-md-6">-->
+              <!--    <label for="immigration_status">{{translate('Immigration Status')}}</label>-->
+              <!--    <input type="text" name="immigration_status" value="{{ $member->recidency->immigration_status ?? "" }}" placeholder="{{ translate('Immigration Status') }}" class="form-control">-->
+              <!--    @error('immigration_status')-->
+              <!--        <small class="form-text text-danger">{{ $message }}</small>-->
+              <!--    @enderror-->
+              <!--</div>-->
+          </div>
+
+          <div class="text-right">
+              <button type="submit" class="btn btn-primary btn-sm">{{translate('Update')}}</button>
+          </div>
+      </form>
+    </div>
+  </div>
