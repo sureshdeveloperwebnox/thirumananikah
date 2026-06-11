@@ -80,7 +80,15 @@ class PaymentTypesController extends Controller
             $payment_type = array();
             $payment_type['payment_type'] = 'manual_payment';
             $payment_type['payment_type_key'] = 'manual_payment_' . $method->id;
-            $payment_type['image'] = uploaded_asset($method->photo);
+            
+            $image_src = uploaded_asset($method->photo);
+            if (strpos(strtolower($method->heading), 'google') !== false || strpos(strtolower($method->heading), 'upi') !== false || strpos(strtolower($method->heading), 'gpay') !== false) {
+                $image_src = static_asset('assets/img/google-pay.svg');
+            } elseif (strpos(strtolower($method->heading), 'bank') !== false || strpos(strtolower($method->heading), 'account') !== false) {
+                $image_src = static_asset('assets/img/bank-payment.svg');
+            }
+            $payment_type['image'] = $image_src;
+
             $payment_type['name'] = $method->heading;
             $payment_type['title'] = $method->heading;
             $payment_type['manual_payment_id'] = $method->id;
@@ -95,7 +103,7 @@ class PaymentTypesController extends Controller
                 $payment_type = array();
                 $payment_type['payment_type'] = 'wallet_system';
                 $payment_type['payment_type_key'] = 'wallet';
-                $payment_type['image'] = static_asset('assets/img/payment_method/wallet.png');
+                $payment_type['image'] = static_asset('assets/img/wallet.svg');
                 $payment_type['name'] = "Wallet";
                 $payment_type['title'] = "Wallet Payment";
                 $payment_type['offline_payment_id'] = 0;

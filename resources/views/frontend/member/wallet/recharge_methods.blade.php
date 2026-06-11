@@ -173,7 +173,7 @@
                                                 </div>
                                             @endif
 
-                                            @foreach ($manual_payments as $method)
+                                             @foreach ($manual_payments as $method)
                                                 <div class="col-4 col-md-2">
                                                     <label class="aiz-megabox d-block mb-3">
                                                         <input type="hidden" name="manual_payment_id"
@@ -183,8 +183,16 @@
                                                             data-method-id="{{ $method->id }}" name="payment_option"
                                                             onchange="toggleManualPaymentData({{ $method->id }})">
                                                         <span class="d-block p-3 aiz-megabox-elem">
-                                                            <img src="{{ uploaded_asset($method->photo) }}"
-                                                                class="img-fluid mb-2">
+                                                            @php
+                                                                $image_src = uploaded_asset($method->photo);
+                                                                if (strpos(strtolower($method->heading), 'google') !== false || strpos(strtolower($method->heading), 'upi') !== false || strpos(strtolower($method->heading), 'gpay') !== false) {
+                                                                    $image_src = static_asset('assets/img/google-pay.svg');
+                                                                } elseif (strpos(strtolower($method->heading), 'bank') !== false || strpos(strtolower($method->heading), 'account') !== false) {
+                                                                    $image_src = static_asset('assets/img/bank-payment.svg');
+                                                                }
+                                                            @endphp
+                                                            <img src="{{ $image_src }}"
+                                                                class="img-fluid mb-2" style="max-height: 48px; object-fit: contain;">
                                                             <span class="d-block text-center">
                                                                 <span
                                                                     class="d-block fw-600 fs-15">{{ $method->heading }}</span>
