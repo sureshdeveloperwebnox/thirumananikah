@@ -1,31 +1,26 @@
+<style>
+    .partner-expectation-form .form-group.row {
+        display: flex !important;
+        flex-wrap: wrap !important;
+    }
+    .partner-expectation-form .bootstrap-select .btn {
+        border: 1px solid #ced4da !important;
+        background-color: #fff !important;
+    }
+</style>
 <div class="card">
     <div class="card-header">
         <h5 class="mb-0 h6">{{translate('Partner Expectation')}}</h5>
     </div>
     <div class="card-body">
-        <form action="{{ route('partner_expectations.update', $member->id) }}" method="POST">
+        <form action="{{ route('partner_expectations.update', $member->id) }}" method="POST" class="partner-expectation-form">
             <input name="_method" type="hidden" value="PATCH">
             @csrf
             <div class="form-group row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <label for="general">{{translate('General Requirement')}}</label>
-                    <!--<input type="text" name="general" value="{{ $member->partner_expectations->general ?? "" }}" class="form-control" placeholder="{{translate('General')}}" required>-->
-                
-                <textarea name="general" class="form-control" placeholder="{{translate('General')}}" required rows="5">{{ $member->partner_expectations->general ?? "" }}</textarea>
-
-                
+                    <textarea name="general" class="form-control" placeholder="{{translate('General')}}" required rows="4">{{ $member->partner_expectations->general ?? "" }}</textarea>
                 </div>
-                <!--<div class="col-md-6">-->
-                <!--    <label for="residence_country_id">{{translate('Preffered Location')}}</label>-->
-                <!--    <select class="form-control aiz-selectpicker" name="residence_country_id" data-selected="{{ $member->partner_expectations->residence_country_id ?? "" }}" data-live-search="true" required>-->
-                <!--        @foreach ($countries as $country)-->
-                <!--            <option value="{{$country->id}}">{{$country->name}}</option>-->
-                <!--        @endforeach-->
-                <!--    </select>-->
-                <!--    @error('residence_country_id')-->
-                <!--        <small class="form-text text-danger">{{ $message }}</small>-->
-                <!--    @enderror-->
-                <!--</div>-->
             </div>
             <div class="form-group row">
                 <div class="col-md-6">
@@ -44,13 +39,12 @@
                 </div>
                 
                 
-            </div>
-            <div class="form-group row">
+
                 <div class="col-md-6">
                     <label for="partner_height">{{translate('Height')}}  ({{ translate('cm / Feet') }})</label>
                     <!--<input type="number" name="partner_height" value="{{ $member->partner_expectations->height ?? "" }}" step="any"  placeholder="{{ translate('Height') }}" class="form-control" required>-->
                     
-                     <select id="partner_height" name="partner_height" class="form-control" required>
+                     <select id="partner_height" name="partner_height" class="form-control aiz-selectpicker" data-live-search="true" required>
     @for ($i = 140; $i <= 200; $i++)
         @php
             // Convert the height in cm to feet and inches
@@ -74,7 +68,7 @@
                     <label for="partner_weight">{{translate('Weight')}}  ({{ translate('In Kg') }})</label>
                     <!--<input type="number" name="partner_weight" value="{{ $member->partner_expectations->weight ?? "" }}" step="any" class="form-control" placeholder="{{translate('Weight')}}" required>-->
                     
-                    <select id="partner_weight" name="partner_weight" class="form-control" required>
+                    <select id="partner_weight" name="partner_weight" class="form-control aiz-selectpicker" data-live-search="true" required>
                         @for ($i = 40; $i <= 140; $i++)
                             <option value="{{ $i }}" {{ isset($member->partner_expectations) && $member->partner_expectations->weight == $i ? 'selected' : '' }}>{{ $i }}</option>
                         @endfor
@@ -84,9 +78,7 @@
                         <small class="form-text text-danger">{{ $message }}</small>
                     @enderror
                 </div>
-            </div>
 
-            <div class="form-group row">
                 <div class="col-md-6">
                     <!--<label for="partner_marital_status">{{translate('Marital Status')}}</label>-->
                      <label for="partner_marital_status">Marital Status</label>
@@ -114,8 +106,7 @@
                         <small class="form-text text-danger">{{ $message }}</small>
                     @enderror
                 </div>
-            </div>
-            <div class="form-group row">
+
                 <div class="col-md-6">
                     <label for="partner_religion_id">{{translate('Religion')}}</label>
                     <select class="form-control aiz-selectpicker" name="partner_religion_id" id="partner_religion_id" data-selected="{{ $partner_religion_id }}" data-live-search="true" required>
@@ -137,10 +128,8 @@
                         <small class="form-text text-danger">{{ $message }}</small>
                     @enderror
                 </div>
-            </div>
 
-            <div class="form-group row">
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <label for="partner_sub_caste_id">{{translate('Sub Sect')}}</label>
                     <select class="form-control aiz-selectpicker" name="partner_sub_caste_id" id="partner_sub_caste_id" data-live-search="true">
 
@@ -149,7 +138,7 @@
                    <!--<input type="text" class="form-control" name="partner_sub_caste_id" id="partner_sub_caste_id" />-->
 
                 
-                </div>
+                </div> --}}
                 <div class="col-md-6">
                     <label for="language_id">{{translate('Language')}}</label>
                     <select class="form-control aiz-selectpicker" name="language_id" data-selected="{{ $member->partner_expectations->language_id ?? "" }}" data-live-search="true" required>
@@ -162,14 +151,12 @@
                         <small class="form-text text-danger">{{ $message }}</small>
                     @enderror
                 </div>
-            </div>
 
-            <div class="form-group row">
                 <div class="col-md-6">
                     <label for="pertner_education">{{translate('Education')}}</label>
                     <!--<input type="text" name="pertner_education" value="{{ $member->partner_expectations->education ?? "" }}" class="form-control" placeholder="{{translate('Education')}}">-->
                      <!--<label for="pertner_education">{{ translate('Education') }}</label>-->
-                        <select id="pertner_education" name="pertner_education" class="form-control" required>
+                        <select id="pertner_education" name="pertner_education" class="form-control aiz-selectpicker" data-live-search="true" required>
     <option value="" disabled {{ isset($member->partner_expectations) && $member->partner_expectations->education ? 'selected' : '' }}>{{ translate('Select Education') }}</option>
     <option value="Science" {{ isset($member->partner_expectations) && $member->partner_expectations->education == 'Science' ? 'selected' : '' }}>Science</option>
     <option value="Agriculture" {{ isset($member->partner_expectations) && $member->partner_expectations->education == 'Agriculture' ? 'selected' : '' }}>Agriculture</option>
@@ -217,7 +204,7 @@
                     <!--<input type="text" name="partner_profession" value="{{ $member->partner_expectations->profession ?? "" }}" class="form-control" placeholder="{{translate('Profession')}}">-->
                     
                     <label for="partner_profession">{{ translate('Profession') }}</label>
-                    <select id="partner_profession" name="partner_profession" class="form-control" required>
+                    <select id="partner_profession" name="partner_profession" class="form-control aiz-selectpicker" data-live-search="true" required>
                         <option value="" disabled {{ isset($member->partner_expectations->profession) ? 'selected' : '' }}>{{ translate('Select Profession') }}</option>
                         <option value="Not working" {{ isset($member->partner_expectations) && $member->partner_expectations->profession == 'Not working' ? 'selected' : '' }}>Not working</option>
                         <option value="Student" {{ isset($member->partner_expectations) && $member->partner_expectations->profession == 'Student' ? 'selected' : '' }}>Student</option>
@@ -293,8 +280,6 @@
                         <small class="form-text text-danger">{{ $message }}</small>
                     @enderror
                 </div>
-            </div>
-
             <!--<div class="form-group row">-->
             <!--    <div class="col-md-6">-->
             <!--        <label for="smoking_acceptable">{{translate('Smoking Acceptable')}}</label>-->
@@ -321,8 +306,6 @@
             <!--        @enderror-->
             <!--    </div>-->
             <!--</div>-->
-
-            <div class="form-group row">
                 <!--<div class="col-md-6">-->
                 <!--    <label for="partner_diet">{{translate('Dieting Acceptable')}}</label>-->
                 <!--    @php $partner_dieting_acceptable = !empty($member->partner_expectations->diet) ? $member->partner_expectations->diet : ""; @endphp-->
@@ -341,7 +324,7 @@
                     <label for="pertner_complexion">{{translate('Skin color')}}</label>
                     <!--<input type="text" name="pertner_complexion" value="{{ $member->partner_expectations->complexion ?? "" }}" class="form-control" placeholder="{{translate('Complexion')}}" required>-->
                     
-                     <select id="pertner_complexion" name="pertner_complexion" class="form-control" required>
+                     <select id="pertner_complexion" name="pertner_complexion" class="form-control aiz-selectpicker" data-live-search="true" required>
                         <option value="" disabled {{ isset($member->partner_expectations->pertner_complexion) ? 'selected' : '' }}>{{ translate('Select Skin color') }}</option>
                         <option value="Very fair" {{ isset($member->partner_expectations) && $member->partner_expectations->complexion == 'Very fair' ? 'selected' : '' }}>Very fair</option>
                         <option value="Fair" {{ isset($member->partner_expectations) && $member->partner_expectations->complexion == 'Fair' ? 'selected' : '' }}>Fair</option>
@@ -363,7 +346,7 @@
                     <label for="partner_body_type">{{translate('Body Type')}}</label>
                     <!--<input type="text" name="partner_body_type" value="{{ $member->partner_expectations->body_type ?? "" }}" class="form-control" placeholder="{{translate('Body Type')}}">-->
                     
-                <select id="partner_body_type" name="partner_body_type" class="form-control" required>
+                <select id="partner_body_type" name="partner_body_type" class="form-control aiz-selectpicker" data-live-search="true" required>
                     <option value="Slim" {{ isset($member->partner_expectations) && $member->partner_expectations->body_type == 'Slim' ? 'selected' : '' }}>Slim</option>
                     <option value="Average" {{ isset($member->partner_expectations) && $member->partner_expectations->body_type == 'Average' ? 'selected' : '' }}>Average</option>
                     <option value="Athletic" {{ isset($member->partner_expectations) && $member->partner_expectations->body_type == 'Athletic' ? 'selected' : '' }}>Athletic</option>
@@ -374,14 +357,12 @@
                         <small class="form-text text-danger">{{ $message }}</small>
                     @enderror
                 </div>
-            </div>
 
-            <div class="form-group row">
                 <div class="col-md-6">
                     <label for="partner_personal_value">{{translate('Performing Salah')}}</label>
                     <!--<input type="text" name="partner_personal_value" value="{{ $member->partner_expectations->personal_value ?? "" }}" class="form-control" placeholder="{{translate('Personal Value')}}">-->
                     
-                    <select name="partner_personal_value" class="form-control">
+                    <select name="partner_personal_value" class="form-control aiz-selectpicker" data-live-search="true">
     <option value="always" {{ isset($member->hobbies) && $member->hobbies->hobbies == 'always' ? 'selected' : '' }}>
         {{ translate('Always') }}
     </option>
@@ -434,9 +415,7 @@
                 </div>
                 
                
-            </div>
 
-            <div class="form-group row">
                 <div class="col-md-6">
                     <label for="partner_country_id">{{translate('Preferred Country')}}</label>
                     <select class="form-control aiz-selectpicker" name="partner_country_id" id="partner_country_id" data-selected="{{ $partner_country_id }}" data-live-search="true" required>
@@ -458,9 +437,7 @@
                         <small class="form-text text-danger">{{ $message }}</small>
                     @enderror
                 </div>
-            </div>
-            
-            <div class="form-group row">
+
                 
             
                 <div class="col-md-6">
