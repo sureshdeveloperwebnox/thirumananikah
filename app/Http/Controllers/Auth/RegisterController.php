@@ -110,7 +110,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $approval = get_setting('member_verification') == 1 ? 0 : 1;
-        if (filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+        if (isset($data['email']) && filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $user = User::create([
                 'first_name'  => $data['first_name'],
                 'last_name'   => $data['last_name'],
@@ -122,20 +122,18 @@ class RegisterController extends Controller
                 'approved'    => $approval,
             ]);
         } else {
-            if (addon_activation('otp_system')) {
-                $user = User::create([
-                    'first_name'  => $data['first_name'],
-                    'last_name'   => $data['last_name'],
-                    'membership'  => 1,
-                    'phone'       => '+' . $data['country_code'] . $data['phone'],
-                    'password'    => Hash::make($data['password']),
-                    'code'        => unique_code(),
-                    'approved'    => $approval,
-                    'verification_code' => rand(100000, 999999)
-                ]);
-            }
+            $user = User::create([
+                'first_name'  => $data['first_name'],
+                'last_name'   => $data['last_name'],
+                'membership'  => 1,
+                'phone'       => '+' . $data['country_code'] . $data['phone'],
+                'password'    => Hash::make($data['password']),
+                'code'        => unique_code(),
+                'approved'    => $approval,
+                'verification_code' => rand(100000, 999999)
+            ]);
         }
-        if (addon_activation('referral_system') && $data['referral_code'] != null) {
+        if (addon_activation('referral_system') && isset($data['referral_code']) && $data['referral_code'] != null) {
             $reffered_user = User::where('code', '!=', null)->where('code', $data['referral_code'])->first();
             if ($reffered_user != null) {
                 $user->referred_by = $reffered_user->id;
@@ -165,7 +163,7 @@ class RegisterController extends Controller
 
 
         // Account opening Email to member
-        if ($data['email'] != null  && env('MAIL_USERNAME') != null) {
+        if (isset($data['email']) && $data['email'] != null && env('MAIL_USERNAME') != null) {
             $account_oppening_email = EmailTemplate::where('identifier', 'account_oppening_email')->first();
             if ($account_oppening_email->status == 1) {
                 EmailUtility::account_oppening_email($user->id, $data['password']);

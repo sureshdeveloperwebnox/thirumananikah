@@ -33,13 +33,20 @@
                                 @endif
                             </div>
 
-                            <div class="form-group">
-                                <label class="form-label" for="password">{{ translate('Password') }}</label>
-                                <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password" placeholder="********" required>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">{{ $message }}</span>
-                                @enderror
-                            </div>
+                             <div class="form-group">
+                                 <label class="form-label" for="password">{{ translate('Password') }}</label>
+                                 <div class="input-group">
+                                     <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password" placeholder="********" required>
+                                     <div class="input-group-append">
+                                         <span class="input-group-text toggle-password" style="cursor: pointer;">
+                                             <i class="las la-eye-slash"></i>
+                                         </span>
+                                     </div>
+                                 </div>
+                                 @error('password')
+                                     <span class="invalid-feedback d-block" role="alert">{{ $message }}</span>
+                                 @enderror
+                             </div>
 
                             <div class="mb-3 text-right">
                                 <a class="link-muted text-capitalize font-weight-normal" href="{{ route('password.request') }}">{{ translate('Forgot Password?') }}</a>
@@ -125,4 +132,22 @@
     
      </style>
 </div>
+@endsection
+
+@section('script')
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.toggle-password').on('click', function() {
+            var input = $(this).closest('.input-group').find('input');
+            var icon = $(this).find('i');
+            if (input.attr('type') === 'password') {
+                input.attr('type', 'text');
+                icon.removeClass('la-eye-slash').addClass('la-eye');
+            } else {
+                input.attr('type', 'password');
+                icon.removeClass('la-eye').addClass('la-eye-slash');
+            }
+        });
+    });
+</script>
 @endsection

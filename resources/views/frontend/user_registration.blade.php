@@ -103,7 +103,7 @@
 							        </div>
 							    </div>
 							@else
-								<div class="row">
+								<!-- <div class="row">
 									<div class="col-lg-12">
 									  <div class="form-group mb-3">
 											<label class="form-label" for="email">{{ translate('Email address') }}</label>
@@ -113,14 +113,14 @@
 									        @enderror
 									  </div>
 									</div>
-								</div>
+								</div> -->
 								
 								<div class="row">
 									<div class="col-lg-12">
 									  <div class="form-group mb-3">
 											<label class="form-label" for="email">{{ translate('Phone Number') }}</label>
 										 <div class="form-group phone-form-group mb-1">
-							            <input type="tel" id="phone-code" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" value="{{ old('phone') }}" placeholder="" name="phone" autocomplete="off">
+							            <input type="tel" id="phone-code" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" value="{{ old('phone') }}" placeholder="" name="phone" autocomplete="off" required>
 							        </div>
 							        <input type="hidden" name="country_code" value="">
 									        @error('phone')
@@ -148,18 +148,32 @@
 								<div class="col-lg-6">
 									<div class="form-group mb-3">
 										<label class="form-label" for="password">{{ translate('Password') }}</label>
-										<input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="********" aria-label="********" required>
-										<small>{{ translate('Minimun 8 characters') }}</small>
+										<div class="input-group">
+											<input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="********" aria-label="********" required>
+											<div class="input-group-append">
+												<span class="input-group-text toggle-password" style="cursor: pointer;">
+													<i class="las la-eye-slash"></i>
+												</span>
+											</div>
+										</div>
+										<small class="form-text text-muted">{{ translate('Minimun 8 characters') }}</small>
 										@error('password')
-										<span class="invalid-feedback" role="alert">{{ $message }}</span>
+										<span class="invalid-feedback d-block" role="alert">{{ $message }}</span>
 										@enderror
 									</div>
 								</div>
 								<div class="col-lg-6">
 									<div class="form-group mb-3">
 										<label class="form-label" for="password-confirm">{{ translate('Confirm password') }}</label>
-										<input type="password" class="form-control" name="password_confirmation" placeholder="********" required>
-										<small>{{ translate('Minimun 8 characters') }}</small>
+										<div class="input-group">
+											<input type="password" class="form-control" name="password_confirmation" placeholder="********" required>
+											<div class="input-group-append">
+												<span class="input-group-text toggle-password" style="cursor: pointer;">
+													<i class="las la-eye-slash"></i>
+												</span>
+											</div>
+										</div>
+										<small class="form-text text-muted">{{ translate('Minimun 8 characters') }}</small>
 									</div>
 								</div>
 							</div>
@@ -257,4 +271,20 @@
 	<!--	@include('partials.emailOrPhone')-->
 	<!--@endif-->
 	@include('partials.emailOrPhone')
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.toggle-password').on('click', function() {
+				var input = $(this).closest('.input-group').find('input');
+				var icon = $(this).find('i');
+				if (input.attr('type') === 'password') {
+					input.attr('type', 'text');
+					icon.removeClass('la-eye-slash').addClass('la-eye');
+				} else {
+					input.attr('type', 'password');
+					icon.removeClass('la-eye').addClass('la-eye-slash');
+				}
+			});
+		});
+	</script>
 @endsection
