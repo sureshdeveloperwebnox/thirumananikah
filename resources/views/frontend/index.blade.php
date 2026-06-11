@@ -637,49 +637,6 @@
     <!-- </div> -->
 <!--====================================================================================================================-->
 
-    <!-- premium member Section -->
-    <!--@if (get_setting('show_premium_member_section') == 'on')-->
-    <!--    <section class="p-7 pb-0 eb-pm-bg ">-->
-    <!--        <div class="container">-->
-    <!--            <div class="row">-->
-    <!--                <div class="col-lg-10 col-xl-8 col-xxl-6 mx-auto">-->
-    <!--                    <div class="text-center section-title mb-5">-->
-    <!--                        <h1 class="fw-600 mb-3 eb-base-color ">{{ get_setting('premium_member_section_title') }}</h1>-->
-    <!--                        <p class="eb-para-text opacity-60">{{ get_setting('premium_member_section_sub_title') }}</p>-->
-    <!--                    </div>-->
-    <!--                    <style>-->
-                            
-    <!--                        .eb-pm-bg{-->
-    <!--                            background:url("public/assets/img/bg.png")no-repeat top center;-->
-    <!--                            background-size:cover;-->
-    <!--                            background-attachment:fixed;-->
-    <!--                        }-->
-                            
-    <!--                        .eb-base-color{-->
-    <!--                            color:#f5007e;-->
-    <!--                        }-->
-                            
-    <!--                        .eb-para-text{-->
-    <!--                            color: black;-->
-    <!--                            font-size: 18px;-->
-    <!--                            font-weight: 500;-->
-    <!--                        }-->
-                            
-                            
-    <!--                    </style>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--            <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="5" data-xl-items="4" data-lg-items="4"-->
-    <!--                data-md-items="3" data-sm-items="2" data-xs-items="1" data-dots='true' data-infinite='true'>-->
-    <!--                @foreach ($premium_members as $key => $member)-->
-    <!--                    <div class="carousel-box">-->
-    <!--                        @include('frontend.inc.member_box_1',['member'=>$member])-->
-    <!--                    </div>-->
-    <!--                @endforeach-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </section>-->
-    <!--@endif-->
     
     
     @if (get_setting('show_premium_member_section') == 'on')
@@ -707,17 +664,75 @@
                             font-size: 18px;
                             font-weight: 500;
                         }
+
+                        /* Premium tabs custom styling */
+                        .premium-members-nav .nav-link {
+                            border: none;
+                            color: #777;
+                            font-weight: 600;
+                            font-size: 16px;
+                            padding: 10px 24px;
+                            border-radius: 30px;
+                            transition: all 0.3s ease;
+                            background: rgba(0, 0, 0, 0.05);
+                            margin: 0 5px;
+                        }
+                        .premium-members-nav .nav-link.active {
+                            background: #f5007e !important;
+                            color: #fff !important;
+                            box-shadow: 0 4px 15px rgba(245, 0, 126, 0.3);
+                        }
+                        .premium-members-nav .nav-link:hover {
+                            color: #f5007e;
+                            background: rgba(245, 0, 126, 0.1);
+                        }
+                        .premium-members-nav .nav-link.active:hover {
+                            color: #fff;
+                        }
                     </style>
                 </div>
             </div>
-            <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="5" data-xl-items="4" data-lg-items="4"
-                data-md-items="3" data-sm-items="2" data-xs-items="1" data-dots='true' data-infinite='true' 
-                data-autoplay='true' data-autoplay-speed='4000'>
-                @foreach ($premium_members as $key => $member)
-                    <div class="carousel-box">
-                        @include('frontend.inc.member_box_1',['member'=>$member])
+
+            <!-- Tabs Navigation -->
+            <div class="d-flex justify-content-center mb-5">
+                <ul class="nav nav-pills premium-members-nav" id="premium-members-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="active-members-tab" data-toggle="pill" href="#active-members" role="tab" aria-controls="active-members" aria-selected="true">
+                            <i class="las la-users mr-1"></i>{{ translate('Recently Active') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="new-members-tab" data-toggle="pill" href="#new-members" role="tab" aria-controls="new-members" aria-selected="false">
+                            <i class="las la-user-plus mr-1"></i>{{ translate('Newly Registered') }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tabs Content -->
+            <div class="tab-content" id="premium-members-tabContent">
+                <div class="tab-pane fade show active" id="active-members" role="tabpanel" aria-labelledby="active-members-tab">
+                    <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="5" data-xl-items="4" data-lg-items="4"
+                        data-md-items="3" data-sm-items="2" data-xs-items="1" data-dots='true' data-infinite='true' 
+                        data-autoplay='true' data-autoplay-speed='4000'>
+                        @foreach ($active_premium_members as $key => $member)
+                            <div class="carousel-box">
+                                @include('frontend.inc.member_box_1',['member'=>$member])
+                            </div>
+                        @endforeach
                     </div>
-                @endforeach
+                </div>
+                <div class="tab-pane fade" id="new-members" role="tabpanel" aria-labelledby="new-members-tab">
+                    <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="5" data-xl-items="4" data-lg-items="4"
+                        data-md-items="3" data-sm-items="2" data-xs-items="1" data-dots='true' data-infinite='true' 
+                        data-autoplay='true' data-autoplay-speed='4000'>
+                        @foreach ($new_premium_members as $key => $member)
+                            <div class="carousel-box">
+                                @include('frontend.inc.member_box_1',['member'=>$member])
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1188,6 +1203,14 @@
         function package_update_alert() {
             $('.package_update_alert_modal').modal('show');
         }
+
+        $(document).ready(function() {
+            $('a[data-toggle="pill"]').on('shown.bs.tab', function (e) {
+                if (typeof $.fn.slick !== 'undefined') {
+                    $('.aiz-carousel').slick('setPosition');
+                }
+            });
+        });
     </script>
     
     

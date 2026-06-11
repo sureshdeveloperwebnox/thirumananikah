@@ -70,14 +70,19 @@ class HomeController extends Controller
             }
         }
 
-        $premium_members = $members;
-        $new_members = $members;
+        $new_members = (clone $members)->orderBy('id', 'desc')->limit(get_setting('max_new_member_show_homepage'))->get()->shuffle();
+        
+        $active_premium_members = (clone $members)->where('membership', 2)
+            ->orderByRaw('CASE WHEN last_login_at IS NULL THEN 1 ELSE 0 END, last_login_at DESC')
+            ->limit(get_setting('max_premium_member_homepage'))
+            ->get();
 
-        $new_members = $new_members->orderBy('id', 'desc')->limit(get_setting('max_new_member_show_homepage'))->get()->shuffle();
-        $premium_members = $premium_members->where('membership', 2)->inRandomOrder()->limit(get_setting('max_premium_member_homepage'))->get();
+        $new_premium_members = (clone $members)->where('membership', 2)
+            ->orderBy('created_at', 'desc')
+            ->limit(get_setting('max_premium_member_homepage'))
+            ->get();
 
-
-        return view('frontend.index', compact('premium_members', 'new_members'));
+        return view('frontend.index', compact('new_members', 'active_premium_members', 'new_premium_members'));
     }
 
 
