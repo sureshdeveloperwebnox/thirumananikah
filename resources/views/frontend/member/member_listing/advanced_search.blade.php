@@ -63,7 +63,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group mb-3">
-                                <label class="form-label" for="name">{{ translate('Caste') }}</label>
+                                <label class="form-label" for="name">{{ translate('Sect') }}</label>
                                 <select name="caste_id" id="caste_id" class="form-control aiz-selectpicker" data-live-search="true" >
                                     <option value="">{{translate('Select One')}}</option>
                                 </select>
