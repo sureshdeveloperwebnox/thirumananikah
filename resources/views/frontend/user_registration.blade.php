@@ -103,18 +103,6 @@
 							        </div>
 							    </div>
 							@else
-								<!-- <div class="row">
-									<div class="col-lg-12">
-									  <div class="form-group mb-3">
-											<label class="form-label" for="email">{{ translate('Email address') }}</label>
-											<input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="signinSrEmail" placeholder="{{ translate('Email Address') }}" >
-									        @error('email')
-									            <span class="invalid-feedback" role="alert">{{ $message }}</span>
-									        @enderror
-									  </div>
-									</div>
-								</div> -->
-								
 								<div class="row">
 									<div class="col-lg-12">
 									  <div class="form-group mb-3">
@@ -124,6 +112,18 @@
 							        </div>
 							        <input type="hidden" name="country_code" value="">
 									        @error('phone')
+									            <span class="invalid-feedback" role="alert">{{ $message }}</span>
+									        @enderror
+									  </div>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-lg-12">
+									  <div class="form-group mb-3">
+											<label class="form-label" for="email">{{ translate('Email address') }} ({{ translate('Optional') }})</label>
+											<input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="signinSrEmail" placeholder="{{ translate('Email Address') }}" value="{{ old('email') }}">
+									        @error('email')
 									            <span class="invalid-feedback" role="alert">{{ $message }}</span>
 									        @enderror
 									  </div>
