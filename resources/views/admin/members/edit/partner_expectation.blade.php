@@ -69,7 +69,7 @@
             $inches = round(($i / 2.54) - ($feet * 12), 0);
             $heightInFeetInches = $feet . "'" . ($inches ? $inches : 0) . "\"";
         @endphp
-        <option value="{{ $i }}" {{ isset($member->physical_attributes) && $member->partner_expectations->height == $i ? 'selected' : '' }}>
+        <option value="{{ $i }}" {{ isset($member->partner_expectations) && $member->partner_expectations->height == $i ? 'selected' : '' }}>
             {{ $i }} cm ({{ $heightInFeetInches }})
         </option>
     @endfor
