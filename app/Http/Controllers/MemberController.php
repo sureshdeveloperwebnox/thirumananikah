@@ -433,6 +433,19 @@ class MemberController extends Controller
                 $address->save();
             }
 
+            if ($request->has('father') || $request->has('mother') || $request->has('no_of_sisters')) {
+                $family = Family::where('user_id', $request->id)->first();
+                if (empty($family)) {
+                    $family = new Family;
+                    $family->user_id = $request->id;
+                }
+                $family->father = $request->father;
+                $family->mother = $request->mother;
+                $family->no_of_sisters = $request->no_of_sisters;
+                $family->no_of_brothers = $request->no_of_brothers;
+                $family->save();
+            }
+
             flash(translate('Profile information has been updated successfully.'))->success();
             return back();
         }

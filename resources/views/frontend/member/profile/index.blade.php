@@ -118,9 +118,9 @@
     @endif --}}
 
     <!-- Family Information -->
-    @if(get_setting('member_family_information_section') == 'on')
+    <!-- @if(get_setting('member_family_information_section') == 'on')
       @include('frontend.member.profile.family_information')
-    @endif
+    @endif -->
 
     <!-- Partner Expectation -->
     @php

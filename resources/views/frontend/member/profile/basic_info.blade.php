@@ -169,6 +169,35 @@
             </div>
 
             <hr>
+            <h5 class="mb-3 h6">{{translate('Family Information')}}</h5>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="father">{{translate('Father')}}</label>
+                    <input type="text" name="father" value="{{ $member->families->father ?? "" }}" class="form-control" placeholder="{{translate('Father')}}">
+                    @error('father')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="col-md-6">
+                    <label for="mother">{{translate('Mother')}}</label>
+                    <input type="text" name="mother" value="{{ $member->families->mother ?? "" }}" placeholder="{{ translate('Mother') }}" class="form-control">
+                    @error('mother')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <label for="no_of_sisters">{{translate('Sibling')}}</label>
+                    <input type="text" name="no_of_sisters" value="{{ $member->families->no_of_sisters ?? "" }}" class="form-control" placeholder="{{translate('No of Sisters')}}">
+                    @error('sibling')
+                        <small class="form-text text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <input type="hidden" name="no_of_brothers" value="{{ $member->families->no_of_brothers ?? '' }}">
+            </div>
+
+            <hr>
             <h5 class="mb-3 h6">{{translate('Permanent Address')}}</h5>
             <div class="form-group row">
                 <div class="col-md-6">
