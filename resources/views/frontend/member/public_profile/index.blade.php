@@ -136,14 +136,14 @@
                 margin-top: -260px
             }
         }
-        #profile-accordion table tr td, #profile-accordion table tr th {
+        #profile-accordion table.w-100 tr td, #profile-accordion table.w-100 tr th {
             font-weight: 700 !important;
             font-size: 13px !important;
         }
-        #profile-accordion table tr td:first-child, #profile-accordion table tr th {
+        #profile-accordion table.w-100 tr td:first-child, #profile-accordion table.w-100 tr th {
             color: #000 !important;
         }
-        #profile-accordion table tr td:last-child {
+        #profile-accordion table.w-100 tr td:last-child {
             color: var(--primary) !important;
         }
     </style>
