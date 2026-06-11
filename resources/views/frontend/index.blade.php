@@ -639,14 +639,14 @@
 
     
     
-    @if (get_setting('show_premium_member_section') == 'on')
+    @if (get_setting('show_new_member_section') == 'on')
     <section class="p-7 pb-0 eb-pm-bg ">
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 col-xl-8 col-xxl-6 mx-auto">
                     <div class="text-center section-title mb-5">
-                        <h1 class="fw-600 mb-3 eb-base-color ">{{ get_setting('premium_member_section_title') }}</h1>
-                        <p class="eb-para-text opacity-60">{{ get_setting('premium_member_section_sub_title') }}</p>
+                        <h1 class="fw-600 mb-3 eb-base-color ">{{ get_setting('new_member_section_title') }}</h1>
+                        <p class="eb-para-text opacity-60">{{ get_setting('new_member_section_sub_title') }}</p>
                     </div>
                     <style>
                         .eb-pm-bg{
@@ -696,7 +696,7 @@
             <div class="aiz-carousel gutters-10 half-outside-arrow mt-5" data-items="5" data-xl-items="4" data-lg-items="4"
                 data-md-items="3" data-sm-items="2" data-xs-items="1" data-dots='true' data-infinite='true' 
                 data-autoplay='true' data-autoplay-speed='4000'>
-                @foreach ($new_premium_members as $key => $member)
+                @foreach ($new_members as $key => $member)
                     <div class="carousel-box">
                         @include('frontend.inc.member_box_1',['member'=>$member])
                     </div>

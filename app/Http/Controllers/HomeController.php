@@ -70,13 +70,9 @@ class HomeController extends Controller
             }
         }
 
-        $new_members = (clone $members)->orderBy('id', 'desc')->limit(get_setting('max_new_member_show_homepage'))->get()->shuffle();
+        $new_members = (clone $members)->orderBy('created_at', 'desc')->get();
 
-        $new_premium_members = (clone $members)->where('membership', 2)
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return view('frontend.index', compact('new_members', 'new_premium_members'));
+        return view('frontend.index', compact('new_members'));
     }
 
 

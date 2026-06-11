@@ -324,10 +324,10 @@
                 </div>
                 <div class="col-xl-8 offset-xxl-1">
                     <div class="overflow-hidden rounded shadow-lg mb-4 bg-white d-xl-none position-relative">
-                        <img @if ($profile_picture_show) src="{{ uploaded_asset($user->photo) }}"
+                        <img @if ($profile_picture_show && $user->photo != null) src="{{ uploaded_asset($user->photo) }}"
                             @else
-                            src="{{ static_asset($avatar_image) }}" @endif
-                            onerror="this.onerror=null;this.src='{{ static_asset($avatar_image) }}';"
+                            src="{{ static_avatar($user) }}" @endif
+                            onerror="this.onerror=null;this.src='{{ static_avatar($user) }}';"
                             class="img-fluid w-100">
                         @if (!$profile_picture_show)
                             <div
