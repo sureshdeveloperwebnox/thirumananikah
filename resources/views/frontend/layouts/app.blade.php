@@ -124,11 +124,20 @@ html, body {
 
         .btn-primary,
         .bg-primary-grad {
-            background:#610066;
-            /* background: rgb(253, 41, 123);
-            background: -moz-linear-gradient(225deg, {{ hex2rgba(get_setting('base_color', '#FD2C79'), 1) }} 0%, {{ hex2rgba(get_setting('secondary_color', '#FD655B'), 1) }} 100%);
-            background: -webkit-linear-gradient(225deg, {{ hex2rgba(get_setting('base_color', '#FD2C79'), 1) }} 0%, {{ hex2rgba(get_setting('secondary_color', '#FD655B'), 1) }} 100%);
-            background: linear-gradient(225deg, {{ hex2rgba(get_setting('base_color', '#FD2C79'), 1) }} 0%, {{ hex2rgba(get_setting('secondary_color', '#FD655B'), 1) }} 100%); */
+            background: linear-gradient(135deg, {{ get_setting('base_color', '#FD2C79') }} 0%, {{ get_setting('secondary_color', '#FD655B') }} 100%) !important;
+            border-color: transparent !important;
+            color: #fff !important;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus,
+        .btn-primary:active {
+            background: linear-gradient(135deg, {{ get_setting('secondary_color', '#FD655B') }} 0%, {{ get_setting('base_color', '#FD2C79') }} 100%) !important;
+            border-color: transparent !important;
+            color: #fff !important;
+            box-shadow: 0 5px 15px rgba(253, 44, 121, 0.4) !important;
+            transform: translateY(-1px) !important;
         }
 
         .fill-dark {
