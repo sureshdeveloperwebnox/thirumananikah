@@ -80,7 +80,7 @@
                     <label for="first_name" >{{translate('Marital  Status')}}
                         <span class="text-danger">*</span>
                     </label>
-                    <select class="form-control aiz-selectpicker" name="marital_status" data-selected="{{ $member->member->marital_status_id }}" data-live-search="true" required multiple>
+                    <select class="form-control aiz-selectpicker" name="marital_status" data-selected="{{ $member->member->marital_status_id }}" data-live-search="true" required>
                         @foreach ($marital_statuses as $marital_status)
                             <option value="{{$marital_status->id}}">{{$marital_status->name}}</option>
                         @endforeach

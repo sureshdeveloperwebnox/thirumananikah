@@ -153,8 +153,8 @@ class ProfileController extends Controller
         $member->gender             = $request->gender;
         $member->on_behalves_id     = $request->on_behalf;
         $member->birthday           = date('Y-m-d', strtotime($request->date_of_birth));
-        $member->marital_status_id  = $request->marital_status;
-        $member->children           = $request->children;
+        $member->marital_status_id  = is_array($request->marital_status) ? ($request->marital_status[0] ?? null) : $request->marital_status;
+        $member->children           = is_numeric($request->children) ? $request->children : null;
         $member->save();
         return $this->success_message('Member basic info  has been updated successfully.');
     }
