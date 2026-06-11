@@ -689,6 +689,11 @@
                         .premium-members-nav .nav-link.active:hover {
                             color: #fff;
                         }
+                        @media (max-width: 767.98px) {
+                            .aiz-carousel .slick-dots {
+                                display: none !important;
+                            }
+                        }
                     </style>
                 </div>
             </div>
