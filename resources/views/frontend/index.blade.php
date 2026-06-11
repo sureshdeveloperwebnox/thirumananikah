@@ -689,17 +689,15 @@
                         .premium-members-nav .nav-link.active:hover {
                             color: #fff;
                         }
-                        @media (max-width: 767.98px) {
-                            .aiz-carousel .slick-dots {
-                                display: none !important;
-                            }
+                        .aiz-carousel .slick-dots {
+                            display: none !important;
                         }
                     </style>
                 </div>
             </div>
 
             <div class="aiz-carousel gutters-10 half-outside-arrow mt-5" data-items="5" data-xl-items="4" data-lg-items="4"
-                data-md-items="3" data-sm-items="2" data-xs-items="1" data-dots='true' data-infinite='true' 
+                data-md-items="3" data-sm-items="2" data-xs-items="1" data-dots='false' data-infinite='true' 
                 data-autoplay='true' data-autoplay-speed='4000'>
                 @foreach ($new_members as $key => $member)
                     <div class="carousel-box">
@@ -840,7 +838,7 @@
                 </div>
             </div>
             <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="5" data-xl-items="4" data-lg-items="4"
-                data-md-items="3" data-sm-items="2" data-xs-items="1" data-dots='true' data-infinite='true'
+                data-md-items="3" data-sm-items="2" data-xs-items="1" data-dots='false' data-infinite='true'
                 data-autoplay='true' data-autoplay-speed='4000'>
                 @foreach ($new_members as $key => $member)
                     <div class="carousel-box">
@@ -1003,7 +1001,7 @@
                     </div>
                 </div>
                 <div class="aiz-carousel" data-items="4" data-xl-items="3" data-md-items="2" data-sm-items="1"
-                    data-dots='true' data-infinite='true' data-autoplay='true'>
+                    data-dots='false' data-infinite='true' data-autoplay='true'>
                     @foreach (\App\Models\Package::where('active', '1')->get() as $key => $package)
                         <div class="carousel-box">
                             <div class="overflow-hidden shadow-none mb-3 border-right">

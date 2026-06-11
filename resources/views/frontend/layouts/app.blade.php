@@ -105,18 +105,18 @@ html, body {
 }
 
         :root {
-            --primary: {{ get_setting('base_color', '#FD2C79') }};
-            --hov-primary: {{ get_setting('base_hov_color', '#0069d9') }};
-            --soft-primary: {{ hex2rgba(get_setting('base_hov_color', '#377dff'), 0.15) }};
-            --secondary: {{ get_setting('secondary_color', '#FD655B') }};
-            --soft-secondary: {{ hex2rgba(get_setting('secondary_color', '#FD655B'), 0.15) }};
+            --primary: {{ get_setting('base_color') ?: '#FD2C79' }};
+            --hov-primary: {{ get_setting('base_hov_color') ?: '#0069d9' }};
+            --soft-primary: {{ hex2rgba(get_setting('base_hov_color') ?: '#377dff', 0.15) }};
+            --secondary: {{ get_setting('secondary_color') ?: '#FD655B' }};
+            --soft-secondary: {{ hex2rgba(get_setting('secondary_color') ?: '#FD655B', 0.15) }};
         }
 
         .text-primary-grad {
             /* background: rgb(253, 41, 123);
-            background: -moz-linear-gradient(0deg, {{ hex2rgba(get_setting('base_color', '#FD2C79'), 1) }} 0%, {{ hex2rgba(get_setting('secondary_color', '#FD655B'), 1) }} 100%);
-            background: -webkit-linear-gradient(0deg, {{ hex2rgba(get_setting('base_color', '#FD2C79'), 1) }} 0%, {{ hex2rgba(get_setting('secondary_color', '#FD655B'), 1) }} 100%);
-            background: linear-gradient(0deg, {{ hex2rgba(get_setting('base_color', '#FD2C79'), 1) }} 0%, {{ hex2rgba(get_setting('secondary_color', '#FD655B'), 1) }} 100%);
+            background: -moz-linear-gradient(0deg, {{ hex2rgba(get_setting('base_color') ?: '#FD2C79', 1) }} 0%, {{ hex2rgba(get_setting('secondary_color') ?: '#FD655B', 1) }} 100%);
+            background: -webkit-linear-gradient(0deg, {{ hex2rgba(get_setting('base_color') ?: '#FD2C79', 1) }} 0%, {{ hex2rgba(get_setting('secondary_color') ?: '#FD655B', 1) }} 100%);
+            background: linear-gradient(0deg, {{ hex2rgba(get_setting('base_color') ?: '#FD2C79', 1) }} 0%, {{ hex2rgba(get_setting('secondary_color') ?: '#FD655B', 1) }} 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent; */
             color:#D6A99A;
@@ -124,7 +124,7 @@ html, body {
 
         .btn-primary,
         .bg-primary-grad {
-            background: linear-gradient(135deg, {{ get_setting('base_color', '#FD2C79') }} 0%, {{ get_setting('secondary_color', '#FD655B') }} 100%) !important;
+            background: linear-gradient(135deg, {{ get_setting('base_color') ?: '#FD2C79' }} 0%, {{ get_setting('secondary_color') ?: '#FD655B' }} 100%) !important;
             border-color: transparent !important;
             color: #fff !important;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
@@ -133,7 +133,7 @@ html, body {
         .btn-primary:hover,
         .btn-primary:focus,
         .btn-primary:active {
-            background: linear-gradient(135deg, {{ get_setting('secondary_color', '#FD655B') }} 0%, {{ get_setting('base_color', '#FD2C79') }} 100%) !important;
+            background: linear-gradient(135deg, {{ get_setting('secondary_color') ?: '#FD655B' }} 0%, {{ get_setting('base_color') ?: '#FD2C79' }} 100%) !important;
             border-color: transparent !important;
             color: #fff !important;
             box-shadow: 0 5px 15px rgba(253, 44, 121, 0.4) !important;
