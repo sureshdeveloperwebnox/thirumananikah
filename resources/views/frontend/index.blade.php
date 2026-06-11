@@ -693,46 +693,14 @@
                 </div>
             </div>
 
-            <!-- Tabs Navigation -->
-            <div class="d-flex justify-content-center mb-5">
-                <ul class="nav nav-pills premium-members-nav" id="premium-members-tab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="active-members-tab" data-toggle="pill" href="#active-members" role="tab" aria-controls="active-members" aria-selected="true">
-                            <i class="las la-users mr-1"></i>{{ translate('Recently Active') }}
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="new-members-tab" data-toggle="pill" href="#new-members" role="tab" aria-controls="new-members" aria-selected="false">
-                            <i class="las la-user-plus mr-1"></i>{{ translate('Newly Registered') }}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Tabs Content -->
-            <div class="tab-content" id="premium-members-tabContent">
-                <div class="tab-pane fade show active" id="active-members" role="tabpanel" aria-labelledby="active-members-tab">
-                    <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="5" data-xl-items="4" data-lg-items="4"
-                        data-md-items="3" data-sm-items="2" data-xs-items="1" data-dots='true' data-infinite='true' 
-                        data-autoplay='true' data-autoplay-speed='4000'>
-                        @foreach ($active_premium_members as $key => $member)
-                            <div class="carousel-box">
-                                @include('frontend.inc.member_box_1',['member'=>$member])
-                            </div>
-                        @endforeach
+            <div class="aiz-carousel gutters-10 half-outside-arrow mt-5" data-items="5" data-xl-items="4" data-lg-items="4"
+                data-md-items="3" data-sm-items="2" data-xs-items="1" data-dots='true' data-infinite='true' 
+                data-autoplay='true' data-autoplay-speed='4000'>
+                @foreach ($new_premium_members as $key => $member)
+                    <div class="carousel-box">
+                        @include('frontend.inc.member_box_1',['member'=>$member])
                     </div>
-                </div>
-                <div class="tab-pane fade" id="new-members" role="tabpanel" aria-labelledby="new-members-tab">
-                    <div class="aiz-carousel gutters-10 half-outside-arrow" data-items="5" data-xl-items="4" data-lg-items="4"
-                        data-md-items="3" data-sm-items="2" data-xs-items="1" data-dots='true' data-infinite='true' 
-                        data-autoplay='true' data-autoplay-speed='4000'>
-                        @foreach ($new_premium_members as $key => $member)
-                            <div class="carousel-box">
-                                @include('frontend.inc.member_box_1',['member'=>$member])
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
