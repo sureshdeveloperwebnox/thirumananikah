@@ -822,7 +822,7 @@
 <!--slider secetion-->
 <!--==========================================================================================================================-->
 
-    <!-- New Member Section -->
+    {{--
    @if (get_setting('show_new_member_section') == 'on')
     <section class="py-7 eb-pm-bg">
         <div class="container">
@@ -846,6 +846,7 @@
         </div>
     </section>
 @endif
+--}}
 
     
     
