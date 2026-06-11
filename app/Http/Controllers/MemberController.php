@@ -433,10 +433,10 @@ class MemberController extends Controller
                 $address->save();
             }
 
-            flash('Member basic info  has been updated successfully')->success();
+            flash(translate('Profile information has been updated successfully.'))->success();
             return back();
         }
-        flash('Sorry! Something went wrong.')->error();
+        flash(translate('Sorry! Something went wrong.'))->error();
         return back();
     }
 
