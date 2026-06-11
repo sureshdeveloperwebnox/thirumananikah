@@ -82,6 +82,7 @@
                         <li><i class="las la-phone mr-2"></i> +91 9443993139</li>
                         <li> <i class="las la-calendar mr-2"></i>Mon to Sat </li>
                         <li><i class="las la-clock mr-2"></i>10 AM - 06 PM</li>
+                        <li><i class="las la-file-invoice mr-2"></i>GST : 33CNRPR1020B1ZE</li>
                         
                        
                       
@@ -111,10 +112,10 @@
                     <ul class="eb-ul-style">
                         <li><a class="eb-ul-style" href="#">Home</a></li>
                          <li><a class="eb-ul-style"  href="#">Active Members</a></li>
-                        <li><a class="eb-ul-style"  href="#">About us</a></li>
+                        <li><a class="eb-ul-style"  href="#">About Us</a></li>
                         <li><a class="eb-ul-style"  href="#">Premium Plans</a></li>
                         <li><a class="eb-ul-style"  href="#">Happy Stories</a></li>
-                        <li><a class="eb-ul-style"  href="#">contact us</a></li>
+                        <li><a class="eb-ul-style"  href="#">Contact Us</a></li>
                        
 
                     </ul>
