@@ -46,66 +46,66 @@
                                             </span>
                                             <div class="px-md-4 p-3 flex-grow-1">
 
-                                                <h2 class="h6 fw-600 fs-18 text-truncate mb-1">
+                                                <h2 class="h6 fw-700 fs-18 text-truncate mb-1" style="color: #000 !important;">
                                                     {{ $user->first_name . ' ' . $user->last_name }}</h2>
-                                                <div class="mb-2 fs-12">
-                                                    <span class="opacity-60">{{ translate('Member ID: ') }}</span>
-                                                    <span class="ml-4 text-primary">{{ $user->code }}</span>
+                                                <div class="mb-2 fs-12 fw-700" style="color: #000 !important;">
+                                                    <span>{{ translate('Member ID: ') }}</span>
+                                                    <span class="ml-4" style="color: var(--primary) !important;">{{ $user->code }}</span>
                                                 </div>
-                                                <table class="w-100 opacity-70 mb-2 fs-12">
+                                                <table class="w-100 mb-2 fs-12 fw-700" style="color: #000 !important;">
                                                     <tr>
                                                         <td class="py-1 w-25">
-                                                            <span>{{ translate('Age') }}</span>
+                                                            <span>{{ ucwords(str_replace('_', ' ', translate('Age'))) }}</span>
                                                         </td>
-                                                        <td class="py-1 w-25 fw-400">
+                                                        <td class="py-1 w-25" style="color: var(--primary) !important;">
                                                             {{ \Carbon\Carbon::parse($user->member->birthday)->age }}</td>
-                                                        <td class="py-1 w-25"><span>{{ translate('Height') }}</span></td>
-                                                        <td class="py-1 w-25 fw-400">
+                                                        <td class="py-1 w-25"><span>{{ ucwords(str_replace('_', ' ', translate('Height'))) }}</span></td>
+                                                        <td class="py-1 w-25" style="color: var(--primary) !important;">
                                                             @if (!empty($user->physical_attributes->height))
                                                                 {{ $user->physical_attributes->height }}
                                                             @endif
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="py-1"><span>{{ translate('Religion') }}</span></td>
-                                                        <td class="py-1 fw-400">
+                                                        <td class="py-1"><span>{{ ucwords(str_replace('_', ' ', translate('Religion'))) }}</span></td>
+                                                        <td class="py-1" style="color: var(--primary) !important;">
                                                             @if (!empty($user->spiritual_backgrounds->religion_id))
-                                                                {{ $user->spiritual_backgrounds->religion->name }}
+                                                                {{ ucwords(str_replace('_', ' ', $user->spiritual_backgrounds->religion->name)) }}
                                                             @endif
                                                         </td>
-                                                        <td class="py-1"><span>{{ translate('Caste') }}</span></td>
-                                                        <td class="py-1 fw-400">
+                                                        <td class="py-1"><span>{{ ucwords(str_replace('_', ' ', translate('Caste'))) }}</span></td>
+                                                        <td class="py-1" style="color: var(--primary) !important;">
                                                             @if (!empty($user->spiritual_backgrounds->caste_id))
-                                                                {{ $user->spiritual_backgrounds->caste->name }}
+                                                                {{ ucwords(str_replace('_', ' ', $user->spiritual_backgrounds->caste->name)) }}
                                                             @endif
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="py-1"><span>{{ translate('First Language') }}</span>
+                                                        <td class="py-1"><span>{{ ucwords(str_replace('_', ' ', translate('First Language'))) }}</span>
                                                         </td>
-                                                        <td class="py-1 fw-400">
+                                                        <td class="py-1" style="color: var(--primary) !important;">
                                                             @if ($user->member->mothere_tongue != null)
-                                                                {{ \App\Models\MemberLanguage::where('id', $user->member->mothere_tongue)->first()->name }}
+                                                                {{ ucwords(str_replace('_', ' ', \App\Models\MemberLanguage::where('id', $user->member->mothere_tongue)->first()->name)) }}
                                                             @endif
                                                         </td>
-                                                        <td class="py-1"><span>{{ translate('Marital Status') }}</span>
+                                                        <td class="py-1"><span>{{ ucwords(str_replace('_', ' ', translate('Marital Status'))) }}</span>
                                                         </td>
-                                                        <td class="py-1 fw-400">
+                                                        <td class="py-1" style="color: var(--primary) !important;">
                                                             @if ($user->member->marital_status_id != null)
-                                                                {{ $user->member->marital_status->name }}
+                                                                {{ ucwords(str_replace('_', ' ', $user->member->marital_status->name)) }}
                                                             @endif
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="py-1"><span>{{ translate('Location') }}</span></td>
-                                                        <td class="py-1 fw-400">
+                                                        <td class="py-1"><span>{{ ucwords(str_replace('_', ' ', translate('Location'))) }}</span></td>
+                                                        <td class="py-1" style="color: var(--primary) !important;">
                                                             @php
                                                                 $present_address = \App\Models\Address::where('type', 'present')
                                                                     ->where('user_id', $user->id)
                                                                     ->first();
                                                             @endphp
                                                             @if (!empty($present_address->country_id))
-                                                                {{ $present_address->country->name }}
+                                                                {{ ucwords(str_replace('_', ' ', $present_address->country->name)) }}
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -118,12 +118,11 @@
                                                             class="text-reset c-pointer">
                                                             <i class="las la-user fs-20 text-primary"></i>
                                                             <span
-                                                                class="d-block fs-10 opacity-60">{{ translate('Full Profile') }}</span>
+                                                                class="d-block fs-10 fw-700" style="color: #000 !important;">{{ translate('Full Profile') }}</span>
                                                         </a>
                                                     </div>
                                                     <div class="col">
                                                         @php
-                                                            $interest_class = 'text-primary';
                                                             $do_expressed_interest = \App\Models\ExpressInterest::where('user_id', $user->id)
                                                                 ->where('interested_by', Auth::user()->id)
                                                                 ->first();
@@ -133,7 +132,6 @@
                                                             if (empty($do_expressed_interest) && empty($received_expressed_interest)) {
                                                                 $interest_onclick = 1;
                                                                 $interest_text = translate('Interest');
-                                                                $interest_class = 'text-dark';
                                                             } elseif (!empty($received_expressed_interest)) {
                                                                 $interest_onclick = 'do_response';
                                                                 $interest_text = $received_expressed_interest->status == 0 ? translate('Response to Interest') : translate('You Accepted Interest');
@@ -150,7 +148,7 @@
                                                             class="text-reset c-pointer">
                                                             <i class="la la-heart-o fs-20 text-primary"></i>
                                                             <span id="interest_id_{{ $user->id }}"
-                                                                class="d-block fs-10 opacity-60 {{ $interest_class }}">
+                                                                class="d-block fs-10 fw-700" style="color: #000 !important;">
                                                                 {{ $interest_text }}
                                                             </span>
                                                         </a>
@@ -163,11 +161,9 @@
                                                             if (empty($shortlist)) {
                                                                 $shortlist_onclick = 1;
                                                                 $shortlist_text = translate('Shortlist');
-                                                                $shortlist_class = 'text-dark';
                                                             } else {
                                                                 $shortlist_onclick = 0;
                                                                 $shortlist_text = translate('Shortlisted');
-                                                                $shortlist_class = 'text-primary';
                                                             }
                                                         @endphp
                                                         <a id="shortlist_a_id_{{ $user->id }}"
@@ -177,7 +173,7 @@
                                                             class="text-reset c-pointer">
                                                             <i class="las la-list fs-20 text-primary"></i>
                                                             <span id="shortlist_id_{{ $user->id }}"
-                                                                class="d-block fs-10 opacity-60 {{ $shortlist_class }}">
+                                                                class="d-block fs-10 fw-700" style="color: #000 !important;">
                                                                 {{ $shortlist_text }}
                                                             </span>
                                                         </a>
@@ -185,10 +181,10 @@
                                                     <div class="col">
                                                         <a onclick="ignore_member({{ $user->id }})"
                                                             class="text-reset c-pointer">
-                                                            <span class="text-dark">
+                                                            <span style="color: #000 !important;">
                                                                 <i class="las la-ban fs-20 text-primary"></i>
                                                                 <span
-                                                                    class="d-block fs-10 opacity-60">{{ translate('Ignore') }}</span>
+                                                                    class="d-block fs-10 fw-700">{{ translate('Ignore') }}</span>
                                                             </span>
                                                         </a>
                                                     </div>
@@ -200,21 +196,19 @@
                                                             if (empty($profile_reported)) {
                                                                 $report_onclick = 1;
                                                                 $report_text = translate('Report');
-                                                                $report_class = 'text-dark';
                                                             } else {
                                                                 $report_onclick = 0;
                                                                 $report_text = translate('Reported');
-                                                                $report_class = 'text-primary';
                                                             }
                                                         @endphp
                                                         <a id="report_a_id_{{ $user->id }}"
                                                             @if ($report_onclick == 1) onclick="report_member({{ $user->id }})" @endif
                                                             class="text-reset c-pointer">
                                                             <span id="report_id_{{ $user->id }}"
-                                                                class="{{ $report_class }}">
+                                                                style="color: #000 !important;">
                                                                 <i class="las la-info-circle fs-20 text-primary"></i>
                                                                 <span
-                                                                    class="d-block fs-10 opacity-60">{{ $report_text }}</span>
+                                                                    class="d-block fs-10 fw-700">{{ $report_text }}</span>
                                                             </span>
                                                         </a>
                                                     </div>
