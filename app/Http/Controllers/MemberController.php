@@ -110,15 +110,20 @@ class MemberController extends Controller
         CoreComponentRepository::initializeCache();
 
         $sort_search  = null;
+        $per_page     = $request->has('per_page') ? $request->per_page : 10;
         $members      = User::latest()->where('user_type', 'member')->where('membership', $id);
 
         if ($request->has('search')) {
             $sort_search  = $request->search;
-            $members  = $members->where('code', $sort_search)->orwhere('first_name', 'like', '%' . $sort_search . '%')->orWhere('last_name', 'like', '%' . $sort_search . '%');
+            $members  = $members->where(function ($query) use ($sort_search) {
+                $query->where('code', $sort_search)
+                    ->orWhere('first_name', 'like', '%' . $sort_search . '%')
+                    ->orWhere('last_name', 'like', '%' . $sort_search . '%');
+            });
         }
 
-        $members = $members->paginate(10);
-        return view('admin.members.index', compact('members', 'sort_search'));
+        $members = $members->paginate($per_page);
+        return view('admin.members.index', compact('members', 'sort_search', 'per_page'));
     }
 
     /**
@@ -454,6 +459,7 @@ class MemberController extends Controller
     public function deleted_members(Request $request)
     {
         $sort_search        = null;
+        $per_page           = $request->has('per_page') ? $request->per_page : 10;
         $deleted_members    = User::onlyTrashed();
        
         if ($request->has('search')) {
@@ -463,8 +469,8 @@ class MemberController extends Controller
                     ->orwhere('first_name', 'like', '%' . $sort_search . '%')->orWhere('last_name', 'like', '%' . $sort_search . '%');
             });
         }
-        $deleted_members = $deleted_members->paginate(10);
-        return view('admin.members.deleted_members', compact('deleted_members', 'sort_search'));
+        $deleted_members = $deleted_members->paginate($per_page);
+        return view('admin.members.deleted_members', compact('deleted_members', 'sort_search', 'per_page'));
     }
 
 
@@ -725,10 +731,11 @@ class MemberController extends Controller
         return view('frontend.member.profile.index', compact('member', 'countries', 'religions', 'castes', 'family_values', 'marital_statuses', 'on_behalves', 'languages', 'additional_attributes'));
     }
 
-    public function unapproved_profile_pictures()
+    public function unapproved_profile_pictures(Request $request)
     {
-        $users = User::where('user_type', 'member')->where('photo_approved', 0)->latest()->paginate(10);
-        return view('admin.members.unapproved_member_profile_pictures', compact('users'));
+        $per_page = $request->has('per_page') ? $request->per_page : 10;
+        $users = User::where('user_type', 'member')->where('photo_approved', 0)->latest()->paginate($per_page);
+        return view('admin.members.unapproved_member_profile_pictures', compact('users', 'per_page'));
     }
 
     public function approve_profile_image(Request $request)

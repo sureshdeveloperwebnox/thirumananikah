@@ -19,13 +19,20 @@
   				<div class="col text-center text-md-left">
   					<h5 class="mb-md-0 h6">{{ translate('All members') }}</h5>
   				</div>
-  				<div class="col-md-3">
-  					<form class="" id="sort_members" action="" method="GET">
-  						<div class="input-group input-group-sm">
-  					  		<input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type first name / last name / ID & Enter') }}">
-  						</div>
-  					</form>
-  				</div>
+   				<div class="col-md-5 ml-auto">
+   					<form class="" id="sort_members" action="" method="GET">
+                        <div class="row gutters-5 align-items-center">
+                            <div class="col-md-5 col-5">
+                                @include('admin.inc.per_page_select', ['per_page' => $per_page])
+                            </div>
+                            <div class="col-md-7 col-7">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" id="search" name="search"@isset($sort_search) value="{{ $sort_search }}" @endisset placeholder="{{ translate('Type name / ID & Enter') }}">
+                                </div>
+                            </div>
+                        </div>
+   					</form>
+   				</div>
 		    </div>
             <div class="card-body">
                 <table class="table aiz-table mb-0">
@@ -138,9 +145,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                <div class="aiz-pagination">
-                    {{ $members->appends(request()->input())->links() }}
-                </div>
+                @include('admin.inc.pagination', ['list' => $members])
             </div>
         </div>
     </div>

@@ -10,8 +10,15 @@
 </div>
 
 <div class="card">
-    <div class="card-header">
-      <h5 class="mb-md-0 h6">{{ translate('Profile Pictures') }}</h5>
+    <div class="card-header row gutters-5 align-items-center">
+        <div class="col text-center text-md-left">
+            <h5 class="mb-md-0 h6">{{ translate('Profile Pictures') }}</h5>
+        </div>
+        <div class="col-md-2 col-4 ml-auto">
+            <form id="per_page_form" action="" method="GET">
+                @include('admin.inc.per_page_select', ['per_page' => $per_page])
+            </form>
+        </div>
     </div>
     <div class="card-body">
         <table class="table aiz-table mb-0">
@@ -50,9 +57,7 @@
                 @endforeach
             </tbody>
         </table>
-        <div class="aiz-pagination">
-            {{ $users->appends(request()->input())->links() }}
-        </div>
+        @include('admin.inc.pagination', ['list' => $users])
     </div>
 </div>
 @endsection
