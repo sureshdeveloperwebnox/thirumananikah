@@ -876,4 +876,106 @@ class MemberController extends Controller
         flash(translate('Something Went Wrong!'))->error();
         return back();
     }
+
+    public function avatar_update(Request $request)
+    {
+        // Check if an existing upload_id from the media manager is selected
+        if ($request->has('upload_id')) {
+            $upload_id = $request->input('upload_id');
+            $user = Auth::user();
+
+            // Validate that the upload exists
+            $upload = Upload::find($upload_id);
+            if (!$upload) {
+                return response()->json([
+                    'success' => false,
+                    'message' => translate('Invalid file selection.')
+                ], 400);
+            }
+
+            // Check if admin approval is required
+            $approval_setting = Setting::where('type', 'profile_picture_approval_by_admin')->first();
+            $photo_approved = 1;
+            
+            if ($approval_setting && $approval_setting->value == 1 && $user->user_type == 'member') {
+                $user->photo_approved = 0;
+                $photo_approved = 0;
+            } else {
+                $user->photo_approved = 1;
+            }
+
+            $user->photo = $upload_id;
+            $user->save();
+
+            $message = $photo_approved == 0
+                ? translate('Profile image has been updated successfully, pending admin approval.')
+                : translate('Profile image has been updated successfully.');
+
+            return response()->json([
+                'success' => true,
+                'url' => uploaded_asset($upload_id),
+                'photo_approved' => $photo_approved,
+                'message' => $message
+            ]);
+        }
+
+        // Fallback for direct binary file uploads (if any)
+        $rules = [
+            'avatar' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+        ];
+
+        $messages = [
+            'avatar.required' => translate('Please select an image file.'),
+            'avatar.image'    => translate('The file must be an image.'),
+            'avatar.mimes'    => translate('The image must be of type: jpeg, png, jpg, gif, webp.'),
+            'avatar.max'      => translate('The image size must not exceed 2MB.'),
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 422);
+        }
+
+        if ($request->hasFile('avatar')) {
+            $user = Auth::user();
+            
+            // Save the file and create record in the uploads table
+            $upload_id = upload_api_file($request->file('avatar'));
+
+            // Check if admin approval is required
+            $approval_setting = Setting::where('type', 'profile_picture_approval_by_admin')->first();
+            $photo_approved = 1;
+            
+            if ($approval_setting && $approval_setting->value == 1 && $user->user_type == 'member') {
+                $user->photo_approved = 0;
+                $photo_approved = 0;
+            } else {
+                $user->photo_approved = 1;
+            }
+
+            $user->photo = $upload_id;
+            $user->save();
+
+            $message = $photo_approved == 0
+                ? translate('Profile image has been updated successfully, pending admin approval.')
+                : translate('Profile image has been updated successfully.');
+
+            return response()->json([
+                'success' => true,
+                'url' => uploaded_asset($upload_id),
+                'photo_approved' => $photo_approved,
+                'message' => $message
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => translate('No file uploaded.')
+        ], 400);
+    }
 }
+

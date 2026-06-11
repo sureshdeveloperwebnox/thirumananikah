@@ -7,13 +7,25 @@
     </div>
     <div class="aiz-user-sidenav rounded overflow-hidden">
         <div class="px-4 text-center mb-4">
-            <span class="avatar avatar-md mb-3">
-                @if (Auth::user()->photo != null)
-                    <img src="{{ uploaded_asset(Auth::user()->photo) }}">
-                @else
-                    <img src="{{ static_avatar(Auth::user()) }}">
-                @endif
-            </span>
+            <div class="position-relative d-inline-block">
+                <span class="avatar avatar-md mb-3 position-relative overflow-hidden d-inline-block avatar-upload-btn animate-hover" 
+                      style="cursor: pointer; width: 90px; height: 90px; border-radius: 50%;"
+                      onclick="openAizUploaderForAvatar(this);">
+                    @if (Auth::user()->photo != null)
+                        <img class="sidebar-avatar-img w-100 h-100 object-fit-cover rounded-circle" src="{{ uploaded_asset(Auth::user()->photo) }}" style="object-fit: cover;">
+                    @else
+                        <img class="sidebar-avatar-img w-100 h-100 object-fit-cover rounded-circle" src="{{ static_avatar(Auth::user()) }}" style="object-fit: cover;">
+                    @endif
+                    <div class="avatar-overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center" style="top: 0; left: 0; background: rgba(0,0,0,0.55); opacity: 0; transition: all 0.3s ease; border-radius: 50%;">
+                        <i class="las la-camera text-white" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <div class="avatar-spinner position-absolute w-100 h-100 d-none align-items-center justify-content-center" style="top: 0; left: 0; background: rgba(0,0,0,0.60); border-radius: 50%;">
+                        <div class="spinner-border text-white spinner-border-sm" role="status" style="width: 1.5rem; height: 1.5rem;">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </span>
+            </div>
             <h4 class="h5 fw-600">{{ Auth::user()->first_name . ' ' . Auth::user()->last_name }}</h4>
         </div>
         <div class="text-center mb-3 px-3">
@@ -217,3 +229,119 @@
         </div>
     </div>
 </div>
+
+<style>
+    .avatar-upload-btn.animate-hover {
+        transition: transform 0.2s ease-in-out;
+    }
+    .avatar-upload-btn.animate-hover:hover {
+        transform: scale(1.05);
+    }
+    .avatar-upload-btn:hover .avatar-overlay {
+        opacity: 1 !important;
+    }
+</style>
+
+<script>
+    function openAizUploaderForAvatar(btn) {
+        if (typeof AIZ !== 'undefined' && AIZ.uploader) {
+            AIZ.uploader.trigger(
+                btn,
+                'direct',
+                'image',
+                '',
+                false,
+                function(files) {
+                    if (files && files.length > 0) {
+                        var selectedFileId = files[0];
+                        sendAvatarUpdateAjax(selectedFileId);
+                    }
+                }
+            );
+        } else {
+            alert('{{ translate("Media library is still loading. Please try again.") }}');
+        }
+    }
+
+    function sendAvatarUpdateAjax(selectedFileId) {
+        // Show spinners for ALL avatars on the page
+        var overlays = document.querySelectorAll('.avatar-overlay');
+        var spinners = document.querySelectorAll('.avatar-spinner');
+        
+        overlays.forEach(function(overlay) {
+            overlay.style.opacity = '0';
+        });
+        spinners.forEach(function(spinner) {
+            spinner.classList.remove('d-none');
+            spinner.classList.add('d-flex');
+        });
+
+        var formData = new FormData();
+        formData.append('upload_id', selectedFileId);
+        formData.append('_token', '{{ csrf_token() }}');
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '{{ route("member.avatar_update") }}', true);
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        xhr.onload = function() {
+            if (xhr.status >= 200 && xhr.status < 400) {
+                try {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        var avatarImgs = document.querySelectorAll('.sidebar-avatar-img');
+                        avatarImgs.forEach(function(img) {
+                            img.src = response.url;
+                        });
+                        
+                        if (typeof AIZ !== 'undefined' && AIZ.plugins && AIZ.plugins.notify) {
+                            AIZ.plugins.notify('success', response.message);
+                        }
+                        
+                        if (response.photo_approved == 0) {
+                            setTimeout(function() {
+                                window.location.reload();
+                            }, 1500);
+                        }
+                    } else {
+                        if (typeof AIZ !== 'undefined' && AIZ.plugins && AIZ.plugins.notify) {
+                            AIZ.plugins.notify('danger', response.message || '{{ translate("Failed to update avatar.") }}');
+                        }
+                    }
+                } catch (e) {
+                    if (typeof AIZ !== 'undefined' && AIZ.plugins && AIZ.plugins.notify) {
+                        AIZ.plugins.notify('danger', '{{ translate("Failed to parse response.") }}');
+                    }
+                }
+            } else {
+                var errorMsg = '{{ translate("Something went wrong. Please try again.") }}';
+                try {
+                    var errResponse = JSON.parse(xhr.responseText);
+                    if (errResponse && errResponse.message) {
+                        errorMsg = errResponse.message;
+                    }
+                } catch(e) {}
+                if (typeof AIZ !== 'undefined' && AIZ.plugins && AIZ.plugins.notify) {
+                    AIZ.plugins.notify('danger', errorMsg);
+                }
+            }
+        };
+
+        xhr.onerror = function() {
+            if (typeof AIZ !== 'undefined' && AIZ.plugins && AIZ.plugins.notify) {
+                AIZ.plugins.notify('danger', '{{ translate("Something went wrong. Please try again.") }}');
+            }
+        };
+
+        xhr.onloadend = function() {
+            spinners.forEach(function(spinner) {
+                spinner.classList.remove('d-flex');
+                spinner.classList.add('d-none');
+            });
+        };
+
+        xhr.send(formData);
+    }
+</script>
+
+
