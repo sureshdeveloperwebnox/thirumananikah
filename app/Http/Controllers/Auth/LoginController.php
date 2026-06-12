@@ -205,6 +205,21 @@ class LoginController extends Controller
         ]);
     }
 
+    protected function validateLogin(Request $request)
+    {
+        $rules = [
+            'password' => 'required|string',
+        ];
+
+        if ($request->input('login_with') === 'phone' || (!$request->has('login_with') && $request->filled('phone'))) {
+            $rules['phone'] = 'required|string';
+        } else {
+            $rules['email'] = 'required|string';
+        }
+
+        $request->validate($rules);
+    }
+
     /**
      * Get the needed authorization credentials from the request.
      *
@@ -213,6 +228,16 @@ class LoginController extends Controller
      */
     protected function credentials(Request $request)
     {
+        if ($request->input('login_with') === 'phone' || (!$request->has('login_with') && $request->filled('phone'))) {
+            $phone = $request->get('phone');
+            $country_code = $request->get('country_code');
+            if ($country_code) {
+                $prefix = (strpos($country_code, '+') === 0) ? '' : '+';
+                $phone = $prefix . $country_code . $phone;
+            }
+            return ['phone' => $phone, 'password' => $request->get('password')];
+        }
+
         if (filter_var($request->get('email'), FILTER_VALIDATE_EMAIL)) {
             return $request->only($this->username(), 'password');
         } else {

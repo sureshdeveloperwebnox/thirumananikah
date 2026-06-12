@@ -9,20 +9,50 @@
             </div>
             <div class="modal-body">
                 <div class="p-3">
-                    <form class="" method="POST" action="{{ route('login') }}">
+                    <form class="" method="POST" action="{{ route('login') }}" novalidate>
                         @csrf
-                        <div class="form-group">
-                            <label class="form-label" for="email">
-                                {{ addon_activation('otp_system') ? translate('Email/Phone') : translate('Email') }}
-                            </label>
-                            @if (addon_activation('otp_system'))
-                                <input type="text" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{ translate('Email Or Phone')}}" name="email" id="email">
-                            @else
-                                <input type="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{  translate('Email') }}" name="email" id="email">
-                            @endif
-                            @if (addon_activation('otp_system'))
-                                <span class="opacity-60">{{ translate('Use country code before number') }}</span>
-                            @endif
+                        <input type="hidden" name="login_with" id="modal_login_with" value="{{ old('login_with', 'email') }}">
+
+                        <div class="text-center mb-4">
+                            <ul class="nav nav-tabs login-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link @if(old('login_with', 'email') == 'email') active @endif" id="modal-email-login-tab" data-toggle="tab" href="#modal-email-login-pane" role="tab" aria-controls="modal-email-login-pane" aria-selected="@if(old('login_with', 'email') == 'email') true @else false @endif" style="font-size: 14px; border-radius: 20px; padding: 6px 20px;">{{ translate('Email') }}</a>
+                                </li>
+                                <li class="nav-item ml-2">
+                                    <a class="nav-link @if(old('login_with') == 'phone') active @endif" id="modal-phone-login-tab" data-toggle="tab" href="#modal-phone-login-pane" role="tab" aria-controls="modal-phone-login-pane" aria-selected="@if(old('login_with') == 'phone') true @else false @endif" style="font-size: 14px; border-radius: 20px; padding: 6px 20px;">{{ translate('Phone') }}</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-content mb-3">
+                            <!-- Email Tab -->
+                            <div class="tab-pane fade @if(old('login_with', 'email') == 'email') show active @endif" id="modal-email-login-pane" role="tabpanel" aria-labelledby="modal-email-login-tab">
+                                <div class="form-group">
+                                    <label class="form-label" for="modal-email">{{ translate('Email Address') }}</label>
+                                    <input type="text" class="form-control {{ $errors->has('email') || $errors->has('phone') ? ' is-invalid' : '' }}" value="{{ old('login_with', 'email') == 'email' ? old('email') : '' }}" placeholder="{{ translate('Email') }}" name="email" id="modal-email">
+                                    @if ($errors->has('email') || $errors->has('phone'))
+                                        <span class="invalid-feedback d-block" role="alert">
+                                            <strong>{{ $errors->first('email') ?: $errors->first('phone') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                            
+                            <!-- Phone Tab -->
+                            <div class="tab-pane fade @if(old('login_with') == 'phone') show active @endif" id="modal-phone-login-pane" role="tabpanel" aria-labelledby="modal-phone-login-tab">
+                                <div class="form-group mb-1">
+                                    <label class="form-label" for="modal-phone-code">{{ translate('Phone Number') }}</label>
+                                    <div class="phone-form-group">
+                                        <input type="tel" id="modal-phone-code" class="form-control {{ $errors->has('phone') || $errors->has('email') ? ' is-invalid' : '' }}" value="{{ old('login_with') == 'phone' ? old('phone') : '' }}" name="phone" placeholder="" autocomplete="off">
+                                    </div>
+                                    <input type="hidden" name="country_code" value="{{ old('country_code') }}">
+                                    @if ($errors->has('phone') || $errors->has('email'))
+                                        <span class="invalid-feedback d-block" role="alert">
+                                            <strong>{{ $errors->first('phone') ?: $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -107,3 +137,92 @@
         </div>
     </div>
 </div>
+
+<style>
+     #LoginModal .login-tabs {
+          background: #f8f9fa;
+          border-radius: 30px;
+          padding: 4px;
+          display: inline-flex;
+          margin: 0 auto;
+          border: 1px solid #e9ecef !important;
+     }
+     #LoginModal .login-tabs .nav-link {
+          border: none !important;
+          color: #495057;
+          background: transparent;
+          transition: all 0.3s ease;
+     }
+     #LoginModal .login-tabs .nav-link.active {
+          background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+          color: #fff !important;
+          box-shadow: 0 4px 10px rgba(253, 44, 121, 0.2);
+     }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Initialize intl-tel-input for modal
+        var countryData = window.intlTelInputGlobals.getCountryData(),
+            modalInput = document.querySelector("#modal-phone-code");
+
+        for (var i = 0; i < countryData.length; i++) {
+            var country = countryData[i];
+            if (country.iso2 == 'bd') {
+                country.dialCode = '88';
+            }
+        }
+
+        var modalIti = intlTelInput(modalInput, {
+            initialCountry: "auto",
+            geoIpLookup: function(callback) {
+                $.get('https://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+                    var countryCode = (resp && resp.country) ? resp.country : "us";
+                    callback(countryCode);
+                });
+            },
+            separateDialCode: true,
+            utilsScript: "{{ static_asset('assets/js/intlTelutils.js') }}?1590403638580",
+            onlyCountries: @php echo json_encode(\App\Models\Country::where('status', 1)->pluck('code')->toArray()) @endphp,
+            customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+                if (selectedCountryData.iso2 == 'bd') {
+                    return "01xxxxxxxxx";
+                }
+                return selectedCountryPlaceholder;
+            }
+        });
+
+        var country = modalIti.getSelectedCountryData();
+        $(modalInput).closest('form').find('input[name=country_code]').val(country.dialCode);
+
+        modalInput.addEventListener("countrychange", function(e) {
+            var country = modalIti.getSelectedCountryData();
+            $(modalInput).closest('form').find('input[name=country_code]').val(country.dialCode);
+        });
+
+        // Toggle login field state for modal
+        function toggleModalRequired(tabId) {
+            if (tabId === '#modal-email-login-pane') {
+                $('#modal_login_with').val('email');
+            } else {
+                $('#modal_login_with').val('phone');
+            }
+        }
+
+        // On modal tab switch
+        $('#LoginModal a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var targetPane = $(e.target).attr("href");
+            toggleModalRequired(targetPane);
+        });
+
+        // Initialize state on load for modal
+        var activeTab = $('#modal_login_with').val();
+        if (activeTab === 'phone') {
+            $('#modal-phone-login-tab').tab('show');
+            toggleModalRequired('#modal-phone-login-pane');
+        } else {
+            $('#modal-email-login-tab').tab('show');
+            toggleModalRequired('#modal-email-login-pane');
+        }
+    });
+</script>
