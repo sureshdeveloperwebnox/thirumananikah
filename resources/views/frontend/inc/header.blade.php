@@ -121,9 +121,9 @@
                                 <!--<img src="{{ uploaded_asset(Auth::user()->photo) }}" class="size-30px rounded-circle img-fit mr-2" onerror="this.onerror=null;this.src='{{ static_asset('assets/img/female-avatar-place.png') }}';">-->
             
 									@if (Auth::check())
-                                    <img src="{{ uploaded_asset(Auth::user()->photo) }}" class="size-30px rounded-circle img-fit mr-2" onerror="this.onerror=null;this.src='{{ static_avatar(Auth::user()) }}';">
+                                    <img src="{{ uploaded_asset(Auth::user()->photo) }}" class="header-avatar-img size-30px rounded-circle img-fit mr-2" onerror="this.onerror=null;this.src='{{ static_avatar(Auth::user()) }}';">
                                 @else
-                                    <img src="{{ uploaded_asset(Auth::user()->photo) }}" class="size-30px rounded-circle img-fit mr-2" onerror="this.onerror=null;this.src='{{ static_avatar(null) }}';">
+                                    <img src="{{ uploaded_asset(Auth::user()->photo) }}" class="header-avatar-img size-30px rounded-circle img-fit mr-2" onerror="this.onerror=null;this.src='{{ static_avatar(null) }}';">
                                 @endif
        
                                 

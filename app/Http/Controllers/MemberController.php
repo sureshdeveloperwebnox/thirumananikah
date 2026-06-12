@@ -990,5 +990,51 @@ class MemberController extends Controller
             'message' => translate('No file uploaded.')
         ], 400);
     }
+
+    public function profile_photo_upload(Request $request)
+    {
+        $rules = [
+            'photo_file' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
+        ];
+
+        $messages = [
+            'photo_file.required' => translate('Please select an image file.'),
+            'photo_file.image'    => translate('The file must be an image.'),
+            'photo_file.mimes'    => translate('The image must be of type: jpeg, png, jpg, gif, webp.'),
+            'photo_file.max'      => translate('The image size must not exceed 2MB.'),
+        ];
+
+        $validator = \Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 422);
+        }
+
+        if ($request->hasFile('photo_file')) {
+            $upload_id = upload_api_file($request->file('photo_file'));
+            $upload = \App\Models\Upload::find($upload_id);
+            
+            if ($upload) {
+                return response()->json([
+                    'success' => true,
+                    'id' => $upload->id,
+                    'file_name' => $upload->file_name,
+                    'file_original_name' => $upload->file_original_name,
+                    'extension' => $upload->extension,
+                    'file_size' => $upload->file_size,
+                    'url' => uploaded_asset($upload->id),
+                    'message' => translate('Image uploaded successfully.')
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => translate('No file uploaded.')
+        ], 400);
+    }
 }
 

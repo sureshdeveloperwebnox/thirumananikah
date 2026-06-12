@@ -564,7 +564,134 @@
         }
     });
 
-    
-    	
+    $(document).ready(function() {
+        var uploaderContainer = $('#profile-photo-uploader-container');
+        var fileInput = $('#profile-photo-file-input');
+        var hiddenInput = $('#profile-photo-hidden-input');
+        var previewContainer = $('#profile-photo-preview-container');
+        var fileAmount = uploaderContainer.find('.file-amount');
+
+        if (uploaderContainer.length > 0) {
+            uploaderContainer.on('click', function() {
+                fileInput.trigger('click');
+            });
+
+            fileInput.on('change', function() {
+                if (this.files && this.files[0]) {
+                    uploadProfilePhoto(this.files[0]);
+                }
+            });
+            
+            // Handle existing image on page load
+            var existingPhotoId = hiddenInput.val();
+            if (existingPhotoId) {
+                loadExistingPhotoPreview(existingPhotoId);
+            }
+        }
+
+        function uploadProfilePhoto(file) {
+            // Set loading state
+            fileAmount.text('{{ translate("Uploading...") }}');
+            uploaderContainer.css('pointer-events', 'none');
+            previewContainer.html('<div class="text-center py-2"><div class="spinner-border spinner-border-sm text-primary" role="status"></div></div>');
+
+            var formData = new FormData();
+            formData.append('photo_file', file);
+            formData.append('_token', '{{ csrf_token() }}');
+
+            $.ajax({
+                url: '{{ route("member.profile_photo_upload") }}',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        hiddenInput.val(response.id);
+                        fileAmount.text('1 {{ translate("File selected") }}');
+                        renderPreview(response.id, response.url, response.file_original_name, response.extension, response.file_size);
+                        AIZ.plugins.notify('success', response.message || '{{ translate("Image uploaded successfully.") }}');
+                    } else {
+                        resetUploader();
+                        AIZ.plugins.notify('danger', response.message || '{{ translate("Upload failed.") }}');
+                    }
+                },
+                error: function(xhr) {
+                    resetUploader();
+                    var errorMsg = '{{ translate("Something went wrong. Please try again.") }}';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                    AIZ.plugins.notify('danger', errorMsg);
+                },
+                complete: function() {
+                    uploaderContainer.css('pointer-events', 'auto');
+                    fileInput.val('');
+                }
+            });
+        }
+
+        function loadExistingPhotoPreview(photoId) {
+            $.ajax({
+                url: AIZ.data.appUrl + '/aiz-uploader/get_file_by_ids',
+                type: 'POST',
+                data: {
+                    _token: AIZ.data.csrf,
+                    ids: photoId
+                },
+                success: function(data) {
+                    if (data && data.length > 0) {
+                        var file = data[0];
+                        var fileUrl = AIZ.data.fileBaseUrl + file.file_name;
+                        fileAmount.text('1 {{ translate("File selected") }}');
+                        renderPreview(file.id, fileUrl, file.file_original_name, file.extension, file.file_size);
+                    } else {
+                        fileAmount.text('{{ translate("Choose File") }}');
+                    }
+                },
+                error: function() {
+                    fileAmount.text('{{ translate("Choose File") }}');
+                }
+            });
+        }
+
+        function renderPreview(id, url, originalName, extension, size) {
+            var sizeStr = AIZ.extra.bytesToSize ? AIZ.extra.bytesToSize(size) : (size / 1024).toFixed(2) + ' KB';
+            
+            var html = 
+                '<div class="d-flex justify-content-between align-items-center mt-2 file-preview-item" data-id="' + id + '" title="' + originalName + '.' + extension + '">' +
+                    '<div class="align-items-center align-self-stretch d-flex justify-content-center thumb">' +
+                        '<img src="' + url + '" class="img-fit">' +
+                    '</div>' +
+                    '<div class="col body">' +
+                        '<h6 class="d-flex">' +
+                            '<span class="text-truncate title">' + originalName + '</span>' +
+                            '<span class="ext">.' + extension + '</span>' +
+                        '</h6>' +
+                        '<p>' + sizeStr + '</p>' +
+                    '</div>' +
+                    '<div class="remove">' +
+                        '<button class="btn btn-sm btn-link remove-profile-photo" type="button">' +
+                            '<i class="la la-close"></i>' +
+                        '</button>' +
+                    '</div>' +
+                '</div>';
+            
+            previewContainer.html(html);
+        }
+
+        // Handle attachment deletion
+        $(document).on('click', '.remove-profile-photo', function(e) {
+            e.stopPropagation();
+            resetUploader();
+        });
+
+        function resetUploader() {
+            hiddenInput.val('');
+            fileAmount.text('{{ translate("Choose File") }}');
+            previewContainer.html('');
+            fileInput.val('');
+        }
+    });
 </script>
 @endsection

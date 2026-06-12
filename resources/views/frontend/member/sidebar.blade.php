@@ -285,6 +285,10 @@
                         avatarImgs.forEach(function(img) {
                             img.src = response.url;
                         });
+                        var headerAvatars = document.querySelectorAll('.header-avatar-img');
+                        headerAvatars.forEach(function(img) {
+                            img.src = response.url;
+                        });
                         
                         if (typeof AIZ !== 'undefined' && AIZ.plugins && AIZ.plugins.notify) {
                             AIZ.plugins.notify('success', response.message);

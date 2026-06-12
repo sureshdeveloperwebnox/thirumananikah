@@ -126,14 +126,15 @@
                         @elseif(auth()->user()->photo != null && auth()->user()->photo_approved == 1)
                             <small class="text-danger">({{ translate('Approved.') }})</small>
                         @endif</label>
-                    <div class="input-group" data-toggle="aizuploader" data-type="image">
+                    <div class="input-group" id="profile-photo-uploader-container" style="cursor: pointer;">
                         <div class="input-group-prepend">
                             <div class="input-group-text font-weight-medium">{{ translate('Browse')}}</div>
                         </div>
                         <div class="form-control file-amount">{{ translate('Choose File') }}</div>
-                        <input type="hidden" name="photo" class="selected-files" value="{{ $member->photo }}">
+                        <input type="hidden" name="photo" id="profile-photo-hidden-input" value="{{ $member->photo }}">
                     </div>
-                    <div class="file-preview box sm">
+                    <input type="file" id="profile-photo-file-input" style="display: none;" accept="image/*">
+                    <div class="file-preview box sm" id="profile-photo-preview-container">
                     </div>
                 </div>
             </div>
