@@ -10,7 +10,7 @@
             <div class="position-relative d-inline-block">
                 <span class="avatar avatar-md mb-3 position-relative overflow-hidden d-inline-block avatar-upload-btn animate-hover" 
                       style="cursor: pointer; width: 90px; height: 90px; border-radius: 50%;"
-                      onclick="openAizUploaderForAvatar(this);">
+                      onclick="document.getElementById('avatar-file-input').click();">
                     @if (Auth::user()->photo != null)
                         <img class="sidebar-avatar-img w-100 h-100 object-fit-cover rounded-circle" src="{{ uploaded_asset(Auth::user()->photo) }}" style="object-fit: cover;">
                     @else
@@ -24,6 +24,7 @@
                             <span class="sr-only">Loading...</span>
                         </div>
                     </div>
+                    <input type="file" id="avatar-file-input" style="display: none;" accept="image/*">
                 </span>
             </div>
             <h4 class="h5 fw-600">{{ Auth::user()->first_name . ' ' . Auth::user()->last_name }}</h4>
@@ -243,27 +244,18 @@
 </style>
 
 <script>
-    function openAizUploaderForAvatar(btn) {
-        if (typeof AIZ !== 'undefined' && AIZ.uploader) {
-            AIZ.uploader.trigger(
-                btn,
-                'direct',
-                'image',
-                '',
-                false,
-                function(files) {
-                    if (files && files.length > 0) {
-                        var selectedFileId = files[0];
-                        sendAvatarUpdateAjax(selectedFileId);
-                    }
+    document.addEventListener("DOMContentLoaded", function() {
+        var fileInput = document.getElementById('avatar-file-input');
+        if (fileInput) {
+            fileInput.addEventListener('change', function(e) {
+                if (this.files && this.files[0]) {
+                    sendAvatarUpdateAjax(this.files[0]);
                 }
-            );
-        } else {
-            alert('{{ translate("Media library is still loading. Please try again.") }}');
+            });
         }
-    }
+    });
 
-    function sendAvatarUpdateAjax(selectedFileId) {
+    function sendAvatarUpdateAjax(selectedFile) {
         // Show spinners for ALL avatars on the page
         var overlays = document.querySelectorAll('.avatar-overlay');
         var spinners = document.querySelectorAll('.avatar-spinner');
@@ -277,7 +269,7 @@
         });
 
         var formData = new FormData();
-        formData.append('upload_id', selectedFileId);
+        formData.append('avatar', selectedFile);
         formData.append('_token', '{{ csrf_token() }}');
 
         var xhr = new XMLHttpRequest();
@@ -338,6 +330,10 @@
                 spinner.classList.remove('d-flex');
                 spinner.classList.add('d-none');
             });
+            var fileInput = document.getElementById('avatar-file-input');
+            if (fileInput) {
+                fileInput.value = '';
+            }
         };
 
         xhr.send(formData);
