@@ -16,37 +16,37 @@
         <div class="col mx-auto mb-3" >
             <div class="bg-light rounded overflow-hidden text-center p-3">
                 <i class="la la-heart-o la-2x mb-3 text-primary-grad"></i>
-                <div class="h4 fw-700 text-primary-grad">{{ get_remaining_package_value($user->id,'remaining_interest') }}</div>
-                <div class="opacity-50">{{ translate('Remaining') }} <br> {{ translate('Interest') }}</div>
+                <div class="h3 fw-800 text-primary-grad">{{ get_remaining_package_value($user->id,'remaining_interest') }}</div>
+                <div class="fw-700 text-dark mt-1">{{ translate('Remaining') }} <br> {{ translate('Interest') }}</div>
             </div>
         </div>
         <div class="col mx-auto mb-3" >
             <div class="bg-light rounded overflow-hidden text-center p-3">
                 <i class="las la-phone la-2x mb-3 text-primary-grad"></i>
-                <div class="h4 fw-700 text-primary-grad">{{ get_remaining_package_value($user->id,'remaining_contact_view') }}</div>
-                <div class="opacity-50 ">{{ translate('Remaining') }} <br> {{ translate('Contact View') }}</div>
+                <div class="h3 fw-800 text-primary-grad">{{ get_remaining_package_value($user->id,'remaining_contact_view') }}</div>
+                <div class="fw-700 text-dark mt-1">{{ translate('Remaining') }} <br> {{ translate('Contact View') }}</div>
             </div>
         </div>
         <div class="col mx-auto mb-3" >
             <div class="bg-light rounded overflow-hidden text-center p-3">
                 <i class="las la-phone la-2x mb-3 text-primary-grad"></i>
-                <div class="h4 fw-700 text-primary-grad">{{ get_remaining_package_value($user->id,'remaining_profile_viewer_view') }}</div>
-                <div class="opacity-50 ">{{ translate('Remaining') }} <br> {{ translate('Profile Viewer View') }}</div>
+                <div class="h3 fw-800 text-primary-grad">{{ get_remaining_package_value($user->id,'remaining_profile_viewer_view') }}</div>
+                <div class="fw-700 text-dark mt-1">{{ translate('Remaining') }} <br> {{ translate('Profile Viewer View') }}</div>
             </div>
         </div>
         <div class="col mx-auto mb-3" >
             <div class="bg-light rounded overflow-hidden text-center p-3">
                 <i class="las la-image la-2x mb-3 text-primary-grad"></i>
-                <div class="h4 fw-700 text-center text-primary-grad">{{ get_remaining_package_value($user->id,'remaining_photo_gallery') }}</div>
-                <div class="opacity-50 text-center">{{ translate('Remaining') }} <br> {{ translate('Gallery Image Upload') }}</div>
+                <div class="h3 fw-800 text-center text-primary-grad">{{ get_remaining_package_value($user->id,'remaining_photo_gallery') }}</div>
+                <div class="fw-700 text-dark mt-1 text-center">{{ translate('Remaining') }} <br> {{ translate('Gallery Image Upload') }}</div>
             </div>
         </div>
         @if($profile_picture_privacy == 'only_me')
         <div class="col mx-auto mb-3" >
             <div class="bg-light rounded overflow-hidden text-center p-3">
                 <i class="las la-user-circle la-2x mb-3 text-primary-grad"></i>
-                <div class="h4 fw-700 text-primary-grad">{{ get_remaining_package_value($user->id,'remaining_profile_image_view') }}</div>
-                <div class="opacity-50 ">{{ translate('Remaining') }} <br> {{ translate('Profile Picture View') }}</div>
+                <div class="h3 fw-800 text-primary-grad">{{ get_remaining_package_value($user->id,'remaining_profile_image_view') }}</div>
+                <div class="fw-700 text-dark mt-1">{{ translate('Remaining') }} <br> {{ translate('Profile Picture View') }}</div>
             </div>
         </div>
         @endif
@@ -54,8 +54,8 @@
         <div class="col mx-auto mb-3" >
             <div class="bg-light rounded overflow-hidden text-center p-3">
                 <i class="las la-images la-2x mb-3 text-primary-grad"></i>
-                <div class="h4 fw-700 text-center text-primary-grad">{{ get_remaining_package_value($user->id,'remaining_gallery_image_view') }}</div>
-                <div class="opacity-50 text-center">{{ translate('Remaining') }} <br> {{ translate('Gallery Images View') }}</div>
+                <div class="h3 fw-800 text-center text-primary-grad">{{ get_remaining_package_value($user->id,'remaining_gallery_image_view') }}</div>
+                <div class="fw-700 text-dark mt-1 text-center">{{ translate('Remaining') }} <br> {{ translate('Gallery Images View') }}</div>
             </div>
         </div>
         @endif

@@ -277,14 +277,14 @@
     <div class="row align-items-center gutters-5 text-center">
         <div class="col">
             <a href="{{ route('home') }}" class="text-reset d-block flex-grow-1 text-center py-2">
-                <i class="las la-home fs-18 opacity-60 {{ areActiveRoutes(['home'],'opacity-100')}}"></i>
-                <span class="d-block fs-10 opacity-60 {{ areActiveRoutes(['home'],'opacity-100 fw-600')}}">{{ translate('Home') }}</span>
+                <i class="las la-home fs-20 opacity-90 {{ areActiveRoutes(['home'],'opacity-100 text-primary')}}"></i>
+                <span class="d-block fs-11 opacity-90 fw-700 {{ areActiveRoutes(['home'],'opacity-100 fw-900 text-primary')}}">{{ translate('Home') }}</span>
             </a>
         </div>
         <div class="col">
             <a href="{{ route('frontend.notifications') }}" class="text-reset d-block flex-grow-1 text-center py-2">
                 <span class="d-inline-block position-relative px-2">
-                    <i class="las la-bell fs-18 opacity-60 {{ areActiveRoutes(['frontend.notifications'],'opacity-100')}}"></i>
+                    <i class="las la-bell fs-20 opacity-90 {{ areActiveRoutes(['frontend.notifications'],'opacity-100 text-primary')}}"></i>
                     @if(Auth::check() && Auth::user()->user_type == 'member')
                         @php
                             $unseen_notification = \App\Models\Notification::where('notifiable_id',Auth()->user()->id)->where('read_at',null)->count();
@@ -294,13 +294,13 @@
                         @endif
                     @endif
                 </span>
-                <span class="d-block fs-10 opacity-60 {{ areActiveRoutes(['frontend.notifications'],'opacity-100 fw-600')}}">{{ translate('Notifications') }}</span>
+                <span class="d-block fs-11 opacity-90 fw-700 {{ areActiveRoutes(['frontend.notifications'],'opacity-100 fw-900 text-primary')}}">{{ translate('Notifications') }}</span>
             </a>
         </div>
         <div class="col">
           <a href="{{ route('all.messages') }}" class="text-reset d-block flex-grow-1 text-center py-2 {{ areActiveRoutes(['all.messages'],'opacity-100')}}">
               <span class="d-inline-block position-relative px-2">
-                  <i class="las la-comment-dots fs-18 opacity-60 {{ areActiveRoutes(['all.messages'],'opacity-100')}}"></i>
+                  <i class="las la-comment-dots fs-20 opacity-90 {{ areActiveRoutes(['all.messages'],'opacity-100 text-primary')}}"></i>
                     @if(Auth::check() && Auth::user()->user_type == 'member')
                         @php
                             $unseen_chat_thread_count = count(chat_threads());
@@ -310,36 +310,36 @@
                         @endif
                     @endif
               </span>
-              <span class="d-block fs-10 opacity-60 {{ areActiveRoutes(['all.messages'],'opacity-100 fw-600')}}">{{ translate('Messages') }}</span>
+              <span class="d-block fs-11 opacity-90 fw-700 {{ areActiveRoutes(['all.messages'],'opacity-100 fw-900 text-primary')}}">{{ translate('Messages') }}</span>
           </a>
         </div>
         @if (Auth::check())
             @if(Auth::user()->user_type == 'member')
                 <div class="col">
                     <a href="javascript:void(0)" class="text-reset d-block flex-grow-1 text-center py-2 mobile-side-nav-thumb" data-toggle="class-toggle" data-target=".aiz-mobile-side-nav">
-                        <span class="d-block mx-auto mb-1 opacity-60">
-                            <img src="{{ uploaded_asset(Auth::user()->photo)}}" class="rounded-circle size-20px" onerror="this.onerror=null;this.src='{{ static_avatar(Auth::user()) }}';">
+                        <span class="d-block mx-auto mb-1 opacity-90">
+                            <img src="{{ uploaded_asset(Auth::user()->photo)}}" class="rounded-circle size-25px border border-width-2 border-primary" style="width: 25px; height: 25px;" onerror="this.onerror=null;this.src='{{ static_avatar(Auth::user()) }}';">
                         </span>
-                        <span class="d-block fs-10 opacity-60">{{ translate('Account') }}</span>
+                        <span class="d-block fs-11 opacity-90 fw-700">{{ translate('Account') }}</span>
                     </a>
                 </div>
             @else
                 <div class="col">
                     <a href="{{ route('admin.dashboard') }}" class="text-reset d-block flex-grow-1 text-center py-2">
-                        <span class="d-block mx-auto mb-1 opacity-60">
-                            <img src="{{ uploaded_asset(Auth::user()->photo)}}" class="rounded-circle size-20px" onerror="this.onerror=null;this.src='{{ static_avatar(Auth::user()) }}';">
+                        <span class="d-block mx-auto mb-1 opacity-90">
+                            <img src="{{ uploaded_asset(Auth::user()->photo)}}" class="rounded-circle size-25px border border-width-2 border-primary" style="width: 25px; height: 25px;" onerror="this.onerror=null;this.src='{{ static_avatar(Auth::user()) }}';">
                         </span>
-                        <span class="d-block fs-10 opacity-60">{{ translate('Account') }}</span>
+                        <span class="d-block fs-11 opacity-90 fw-700">{{ translate('Account') }}</span>
                     </a>
                 </div>
             @endif
         @else
             <div class="col">
                 <a href="{{ route('login') }}" class="text-reset d-block flex-grow-1 text-center py-2">
-                    <span class="d-block mx-auto mb-1 opacity-60 {{ areActiveRoutes(['login'],'opacity-100')}}">
-                        <img src="{{ static_avatar(null) }}" class="rounded-circle size-20px">
+                    <span class="d-block mx-auto mb-1 opacity-90 {{ areActiveRoutes(['login'],'opacity-100')}}">
+                        <img src="{{ static_avatar(null) }}" class="rounded-circle size-25px border border-width-2 border-secondary" style="width: 25px; height: 25px;">
                     </span>
-                    <span class="d-block fs-10 opacity-60 {{ areActiveRoutes(['login'],'opacity-100 fw-600')}}">{{ translate('Account') }}</span>
+                    <span class="d-block fs-11 opacity-90 fw-700 {{ areActiveRoutes(['login'],'opacity-100 fw-900 text-primary')}}">{{ translate('Account') }}</span>
                 </a>
             </div>
         @endif
