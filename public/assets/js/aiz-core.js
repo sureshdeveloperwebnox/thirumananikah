@@ -70,11 +70,11 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
                     AIZ.uploader.data.clickedForDelete = id;
                     $("#aizUploaderDelete").modal("show");
 
-                    $(".aiz-uploader-confirmed-delete").on("click", function (
+                    $(".aiz-uploader-confirmed-delete").off("click").on("click", function (
                         e
                     ) {
                         e.preventDefault();
-                        if (e.detail === 1) {
+                        if (AIZ.uploader.data.clickedForDelete !== null) {
                             var clickedForDeleteObject =
                                 AIZ.uploader.data.allFiles[
                                     AIZ.uploader.data.allFiles.findIndex(
@@ -643,6 +643,9 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
             multiple = false,
             callback = null
         ) {
+            if ($("#aizUploaderModal").length > 0) {
+                return;
+            }
             // $("body").append('<div class="aiz-uploader-backdrop"></div>');
 
             var elem = $(elem);
@@ -729,26 +732,24 @@ $.fn.toggleAttr = function (attr, attr1, attr2) {
         },
         initForInput: function () {
             $(document).on("click",'[data-toggle="aizuploader"]', function (e) {
-                if (e.detail === 1) {
-                    var elem = $(this);
-                    var multiple = elem.data("multiple");
-                    var type = elem.data("type");
-                    var oldSelectedFiles = elem.find(".selected-files").val();
+                var elem = $(this);
+                var multiple = elem.data("multiple");
+                var type = elem.data("type");
+                var oldSelectedFiles = elem.find(".selected-files").val();
 
-                    multiple = !multiple ? "" : multiple;
-                    type = !type ? "" : type;
-                    oldSelectedFiles = !oldSelectedFiles
-                        ? ""
-                        : oldSelectedFiles;
+                multiple = !multiple ? "" : multiple;
+                type = !type ? "" : type;
+                oldSelectedFiles = !oldSelectedFiles
+                    ? ""
+                    : oldSelectedFiles;
 
-                    AIZ.uploader.trigger(
-                        this,
-                        "input",
-                        type,
-                        oldSelectedFiles,
-                        multiple
-                    );
-                }
+                AIZ.uploader.trigger(
+                    this,
+                    "input",
+                    type,
+                    oldSelectedFiles,
+                    multiple
+                );
             });
         },
         previewGenerate: function(){

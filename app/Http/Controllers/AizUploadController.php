@@ -14,6 +14,7 @@ class AizUploadController extends Controller
 
     public function __construct()
     {
+        $this->middleware(['auth']);
         $this->middleware(['permission:show_uploaded_files'])->only('index');
     }
 
@@ -158,7 +159,11 @@ class AizUploadController extends Controller
 
     public function get_uploaded_files(Request $request)
     {
-        $uploads = Upload::where('user_id', Auth::user()->id);
+        if (Auth::user()->user_type == 'admin' || Auth::user()->user_type == 'staff') {
+            $uploads = Upload::query();
+        } else {
+            $uploads = Upload::where('user_id', Auth::user()->id);
+        }
         if ($request->search != null) {
             $uploads->where('file_original_name', 'like', '%'.$request->search.'%');
         }
