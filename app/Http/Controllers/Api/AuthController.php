@@ -46,10 +46,10 @@ class AuthController extends Controller
             $otpController = new OTPVerificationController();
             $otpController->send_code($user);
         }
-        // Email to member
-        if ($request->email != null && env('MAIL_USERNAME') != null) {
+        // Email to member and thirumananikah@gmail.com
+        if (env('MAIL_USERNAME') != null) {
             $account_oppening_email = EmailTemplate::where('identifier', 'account_oppening_email')->first();
-            if ($account_oppening_email->status == 1) {
+            if ($account_oppening_email && $account_oppening_email->status == 1) {
                 try {
                     EmailUtility::account_oppening_email($user->id, $request->password);
                 } catch (\Exception $e) {
@@ -277,7 +277,7 @@ class AuthController extends Controller
                             'result' => false,
                             'message' => translate('SMTP not configured properly. Please contact with admin'),
                         ],
-                        404,
+                        404
                     );
                 }
                 
@@ -288,7 +288,7 @@ class AuthController extends Controller
                     'result' => false,
                     'message' => translate('User is not found'),
                 ],
-                404,
+                404
             );
         }
 
@@ -297,7 +297,7 @@ class AuthController extends Controller
                 'result' => true,
                 'message' => translate('A code is sent'),
             ],
-            200,
+            200
         );
     }
 

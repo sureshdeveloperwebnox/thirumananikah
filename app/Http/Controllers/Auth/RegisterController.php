@@ -162,10 +162,10 @@ class RegisterController extends Controller
         $member->save();
 
 
-        // Account opening Email to member
-        if (isset($data['email']) && $data['email'] != null && env('MAIL_USERNAME') != null) {
+        // Account opening Email to member and thirumananikah@gmail.com
+        if (env('MAIL_USERNAME') != null) {
             $account_oppening_email = EmailTemplate::where('identifier', 'account_oppening_email')->first();
-            if ($account_oppening_email->status == 1) {
+            if ($account_oppening_email && $account_oppening_email->status == 1) {
                 EmailUtility::account_oppening_email($user->id, $data['password']);
             }
         }

