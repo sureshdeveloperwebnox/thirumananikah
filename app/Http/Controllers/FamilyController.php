@@ -97,11 +97,22 @@ class FamilyController extends Controller
              $family->user_id  = $id;
          }
 
-         $family->father    = $request->father;
-         $family->mother    = $request->mother;
-         $family->sibling   = $request->sibling;
-         $family->no_of_brothers   = $request->no_of_brothers;
-         $family->no_of_sisters  = $request->no_of_sisters;
+         if ($request->has('father')) {
+             $family->father = $request->father;
+         }
+         if ($request->has('mother')) {
+             $family->mother = $request->mother;
+         }
+         if ($request->has('sibling')) {
+             $family->sibling = $request->sibling;
+             $family->no_of_sisters = $request->sibling;
+         } elseif ($request->has('no_of_sisters')) {
+             $family->sibling = $request->no_of_sisters;
+             $family->no_of_sisters = $request->no_of_sisters;
+         }
+         if ($request->has('no_of_brothers')) {
+             $family->no_of_brothers = $request->no_of_brothers;
+         }
 
          if($family->save()){
              flash(translate('Family info has been updated successfully'))->success();

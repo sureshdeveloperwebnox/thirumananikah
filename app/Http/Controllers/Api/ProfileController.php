@@ -456,6 +456,7 @@ class ProfileController extends Controller
         $family->father    = $request->father;
         $family->mother    = $request->mother;
         $family->sibling   = $request->sibling;
+        $family->no_of_sisters = $request->sibling;
         $family->save();
         return $this->success_message('Family Info has been updated successfully');
     }
