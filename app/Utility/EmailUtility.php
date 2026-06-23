@@ -29,8 +29,6 @@ class EmailUtility
             if (!empty($user->email)) {
                 Notification::send($user, new EmailNotification($subject, $email_body));
             }
-            // Always notify thirumananikah@gmail.com on registration with member welcome email details
-            Notification::route('mail', 'thirumananikah@gmail.com')->notify(new EmailNotification($subject, $email_body));
         }
         catch(\Exception $e){
             \Log::error("Mail error in account_oppening_email: " . $e->getMessage());
@@ -50,8 +48,6 @@ class EmailUtility
             if ($admin) {
                 Notification::send($admin, new EmailNotification($subject, $email_body));
             }
-            // Always notify thirumananikah@gmail.com with admin notification details
-            Notification::route('mail', 'thirumananikah@gmail.com')->notify(new EmailNotification($subject, $email_body));
         }
         catch(\Exception $e){
             \Log::error("Mail error in account_opening_email_to_admin: " . $e->getMessage());

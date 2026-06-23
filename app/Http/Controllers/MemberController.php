@@ -206,7 +206,7 @@ class MemberController extends Controller
             $user_update->membership    = $membership;
             $user_update->save();
 
-            // Account opening email to member and thirumananikah@gmail.com
+            // Account opening email to member
             if (env('MAIL_USERNAME') != null && (get_email_template('account_oppening_email', 'status') == 1)) {
                 EmailUtility::account_oppening_email($user->id, $request->password);
             }

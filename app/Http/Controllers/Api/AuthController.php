@@ -46,7 +46,7 @@ class AuthController extends Controller
             $otpController = new OTPVerificationController();
             $otpController->send_code($user);
         }
-        // Email to member and thirumananikah@gmail.com
+        // Email to member
         if (env('MAIL_USERNAME') != null) {
             $account_oppening_email = EmailTemplate::where('identifier', 'account_oppening_email')->first();
             if ($account_oppening_email && $account_oppening_email->status == 1) {
