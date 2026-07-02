@@ -11,6 +11,8 @@ use App\Models\MemberLanguage;
 use App\Models\Religion;
 use App\Models\State;
 use App\Models\SubCaste;
+use App\Models\City;
+
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PartnerExpectationResource extends JsonResource
@@ -26,6 +28,7 @@ class PartnerExpectationResource extends JsonResource
         $residence_country = Country::where('id', $this->residence_country_id)->first();
         $preferred_country = Country::where('id', $this->preferred_country_id)->first();
         $preferred_state = State::where('id', $this->preferred_state_id)->first();
+        $preferred_city = City::find($this->preferred_city_id);
         $religion = Religion::find($this->religion_id);
         $caste = Caste::find($this->caste_id);
         $sub_caste = SubCaste::find($this->sub_caste_id);
@@ -54,6 +57,7 @@ class PartnerExpectationResource extends JsonResource
             'family_value_id' => $family_value ? $family_value->name : '',
             'preferred_country_id' => $preferred_country ? $preferred_country->name : '',
             'preferred_state_id' => $preferred_state ? $preferred_state->name : '',
+            'preferred_city_id' => $preferred_city ? $preferred_city->name : '',
             'complexion' => $this->complexion,
         ];
     }

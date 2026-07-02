@@ -42,4 +42,9 @@ class PartnerExpectation extends Model
         return $this->belongsTo(MaritalStatus::class)->withTrashed();
     }
 
+    public function preferred_city()
+    {
+        return $this->belongsTo(City::class, 'preferred_city_id')->withTrashed();
+    }
+
 }

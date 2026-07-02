@@ -147,6 +147,12 @@ class PartnerExpectationController extends Controller
         ? implode(",", $request->partner_city_id) 
         : $request->partner_city_id;
 
+         if (is_array($request->partner_city_id)) {
+             $partner_expectations->preferred_city_id = count($request->partner_city_id) > 0 ? $request->partner_city_id[0] : null;
+         } else {
+             $partner_expectations->preferred_city_id = $request->partner_city_id;
+         }
+
          $partner_expectations->complexion                = $request->pertner_complexion;
          $partner_expectations->preferred_family_status_id                = $request->preferred_family_status_id;
          $partner_expectations->partner_min_age                = $request->partner_min_age;

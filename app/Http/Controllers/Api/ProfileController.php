@@ -501,6 +501,19 @@ class ProfileController extends Controller
         $partner_expectations->family_value_id           = $request->family_value_id;
         $partner_expectations->preferred_country_id      = $request->partner_country_id;
         $partner_expectations->preferred_state_id        = $request->partner_state_id;
+        if ($request->has('partner_city_id')) {
+            $partner_city = $request->partner_city_id;
+            if (is_numeric($partner_city)) {
+                $partner_expectations->preferred_city_id = $partner_city;
+            } else {
+                $city = \App\Models\City::where('name', $partner_city)->first();
+                if ($city) {
+                    $partner_expectations->preferred_city_id = $city->id;
+                } else {
+                    $partner_expectations->preferred_city_id = null;
+                }
+            }
+        }
         $partner_expectations->complexion                = $request->pertner_complexion;
 
         $partner_expectations->save();

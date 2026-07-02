@@ -41,6 +41,7 @@ class PartnerExpectationRequest extends FormRequest
             'language_id'               => ['required'],
             'partner_country_id'      => ['required'],
             'partner_state_id'        => ['required'],
+            'partner_city_id'         => ['nullable'],
             'pertner_complexion'                => ['required', 'max:50'],
         ];
     }
