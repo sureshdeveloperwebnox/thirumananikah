@@ -219,7 +219,7 @@ class AuthController extends Controller
 
         return response()->json([
             'result' => true,
-            'message' => translate('Successfully logged in'),
+            'message' => translate('Login Successful'),
             'access_token' => $token,
             'token_type' => 'Bearer',
             'expires_at' => null,
@@ -319,17 +319,16 @@ class AuthController extends Controller
             $user->verification_code = null;
 
             $user->save();
-            return $this->success_message('Your account is now verified');
+            return $this->success_message('Account verified successfully');
         }
-        return $this->failure_message('Verification code does not match!!');
+        return $this->failure_message('Invalid code');
     }
 
     public function resendVerifyCode(Request $request)
     {
 
         $user = auth()->user();
-        // verification code send to user
-        $user->verification_code = rand(1000, 999999);
+        $user->verification_code = rand(100000, 999999);
         $user->save();
         try {
             $user->notify(new VerificationCode($user));
@@ -338,7 +337,7 @@ class AuthController extends Controller
         return response()->json(
             [
                 'result' => true,
-                'message' => 'OTP resend successfull.',
+                'message' => 'Verification code resent successfully',
 
             ],
             200
