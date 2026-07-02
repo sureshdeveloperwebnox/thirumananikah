@@ -87,7 +87,7 @@ class AuthController extends Controller
             }
         }
 
-        return $this->authResponse($user);
+        return $this->authResponse($user, 'Registration Successful');
     }
 
     /**
@@ -107,6 +107,23 @@ class AuthController extends Controller
 
         if ($user != null) {
             if (Hash::check($request->password, $user->password)) {
+                // Account status checks
+                if ($user->approved == 0) {
+                    return response()->json([
+                        'result'  => false,
+                        'status'  => 'pending_approval',
+                        'message' => translate('Please wait for admin approval'),
+                        'user'    => null,
+                    ], 401);
+                }
+                if ($user->blocked == 1) {
+                    return response()->json([
+                        'result'  => false,
+                        'status'  => 'blocked',
+                        'message' => translate('Your account has been blocked'),
+                        'user'    => null,
+                    ], 401);
+                }
                 return $this->authResponse($user);
             }
             return response()->json(['result' => false, 'message' => translate('Unauthorized'), 'user' => null], 401);
@@ -211,7 +228,7 @@ class AuthController extends Controller
      * Log in success
      */
 
-    protected function authResponse($user)
+    protected function authResponse($user, $message = 'Login Successful')
     {
         $maritial_status = MaritalStatus::where('id', $user->member->marital_status_id)->first();
         $token = $user->createToken('API Token')->plainTextToken;
@@ -219,7 +236,7 @@ class AuthController extends Controller
 
         return response()->json([
             'result' => true,
-            'message' => translate('Login Successful'),
+            'message' => translate($message),
             'access_token' => $token,
             'token_type' => 'Bearer',
             'expires_at' => null,

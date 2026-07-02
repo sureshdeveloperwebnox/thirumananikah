@@ -40,7 +40,11 @@ class AuthRequest extends FormRequest
             'date_of_birth'        => 'required|date',
             'password'             => 'required|string|min:8|confirmed',
             'referral_code'        => 'sometimes',
-            'g-recaptcha-response' => [Rule::when(get_setting('google_recaptcha_activation') == 1, ['required', new RecaptchaRule()], ['sometimes'])]
+            'g-recaptcha-response' => [Rule::when(
+                get_setting('google_recaptcha_activation') == 1 && !request()->expectsJson(),
+                ['required', new RecaptchaRule()],
+                ['sometimes']
+            )]
         ];
     }
 

@@ -17,15 +17,10 @@ class EmailVerifiedApi
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = auth()->user();
-        if (
-            !$request->user() ||
-            ($request->user() instanceof MustVerifyEmail &&
-                !$request->user()->hasVerifiedEmail())
-        ) {
+        if (!$request->user() || $request->user()->email_verified_at === null) {
             return response()->json([
-                'result' => false,
-                'status' => 'un_verified',
+                'result'  => false,
+                'status'  => 'un_verified',
                 'message' => translate('Email is not verified!')
             ]);
         }
