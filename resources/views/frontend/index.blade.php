@@ -6,22 +6,37 @@
 </script>
 
     <!-- Homepage Slider Section -->
-    @if (get_setting('show_homepage_slider') == 'on' && get_setting('home_slider_images') != null)
+    @if (get_setting('show_homepage_slider') == 'on')
         <section class=" eb-slider position-relative overflow-hidden  d-flex home-slider-area">
             @php 
-                $slider_images = json_decode(get_setting('home_slider_images'), true);  
-                $slider_images_small = json_decode(get_setting('home_slider_images_small'), true);  
+                $slider_images = [];
+                $slides_dir = public_path('assets/img/slides-images');
+                if (is_dir($slides_dir)) {
+                    $files = glob($slides_dir . '/*.{jpg,jpeg,png,gif,webp,JPG,JPEG,PNG,GIF,WEBP}', GLOB_BRACE);
+                    if (!empty($files)) {
+                        natsort($files);
+                        foreach ($files as $file) {
+                            $slider_images[] = static_asset('assets/img/slides-images/' . basename($file));
+                        }
+                    }
+                }
+                
+                // Fallback to database settings if no images are found in the directory
+                if (empty($slider_images) && get_setting('home_slider_images') != null) {
+                    $db_slider_images = json_decode(get_setting('home_slider_images'), true);
+                    foreach ($db_slider_images as $img_id) {
+                        $asset = uploaded_asset($img_id);
+                        if ($asset) {
+                            $slider_images[] = $asset;
+                        }
+                    }
+                }
             @endphp
             <div class="absolute-full">
-                <div class="aiz-carousel aiz-carousel-full h-100 d-none {{ get_setting('home_slider_images_small') != null ? 'd-md-block' : 'd-block' }}" data-fade='true' data-infinite='true' data-autoplay='true'>
-                    @foreach ($slider_images as $key => $slider_image)
-                        <img class="img-fit" src="{{ uploaded_asset($slider_image) }}">
-                    @endforeach
-                </div>
-                @if (get_setting('home_slider_images_small') != null)
-                    <div class="aiz-carousel aiz-carousel-full h-100 d-md-none" data-fade='true' data-infinite='true' data-autoplay='true'>
-                        @foreach ($slider_images_small as $key => $slider_image)
-                            <img class="img-fit" src="{{ uploaded_asset($slider_image) }}">
+                @if(!empty($slider_images))
+                    <div class="aiz-carousel aiz-carousel-full h-100 d-block" data-fade='true' data-infinite='true' data-autoplay='true'>
+                        @foreach ($slider_images as $slider_image)
+                            <img class="img-fit" src="{{ $slider_image }}">
                         @endforeach
                     </div>
                 @endif
