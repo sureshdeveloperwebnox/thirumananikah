@@ -457,7 +457,7 @@ class HomeController extends Controller
 
             $response['status'] = 1;
             $response['message'] = translate("Your verification mail has been Sent to your email.");
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return $e->getMessage();
             $response['status'] = 0;
             $response['message'] = $e->getMessage();

@@ -30,7 +30,7 @@ class EmailUtility
                 Notification::send($user, new EmailNotification($subject, $email_body));
             }
         }
-        catch(\Exception $e){
+        catch(\Throwable $e){
             \Log::error("Mail error in account_oppening_email: " . $e->getMessage());
         }
     }
@@ -49,7 +49,7 @@ class EmailUtility
                 Notification::send($admin, new EmailNotification($subject, $email_body));
             }
         }
-        catch(\Exception $e){
+        catch(\Throwable $e){
             \Log::error("Mail error in account_opening_email_to_admin: " . $e->getMessage());
         }
     }
@@ -65,7 +65,7 @@ class EmailUtility
         try{
             Notification::send($user, new EmailNotification($subject, $email_body));
         }
-        catch(\Exception $e){
+        catch(\Throwable $e){
             \Log::error("Mail error in member_verification_email: " . $e->getMessage());
         }
     }
@@ -85,7 +85,7 @@ class EmailUtility
         try{
             Notification::send($user, new EmailNotification($subject, $email_body));
         }
-        catch(\Exception $e){
+        catch(\Throwable $e){
             \Log::error("Mail error in staff_account_opening_email: " . $e->getMessage());
         }
     }
@@ -107,7 +107,7 @@ class EmailUtility
         try{
             Notification::send($user, new EmailNotification($subject, $email_body));
         }
-        catch(\Exception $e){
+        catch(\Throwable $e){
             \Log::error("Mail error in package_purchase_email: " . $e->getMessage());
         }
     }
@@ -128,7 +128,7 @@ class EmailUtility
         try{
             Notification::send($user, new EmailNotification($subject, $email_body));
         }
-        catch(\Exception $e){
+        catch(\Throwable $e){
             \Log::error("Mail error in manual_payment_approval_email: " . $e->getMessage());
         }
     }
@@ -144,7 +144,7 @@ class EmailUtility
         try{
             Notification::send($user, new EmailNotification($subject, $email_body));
         }
-        catch(\Exception $e){
+        catch(\Throwable $e){
             \Log::error("Mail error in email_on_accepting_interest: " . $e->getMessage());
         }
     }
@@ -160,7 +160,7 @@ class EmailUtility
         try{
             Notification::send($user, new EmailNotification($subject, $email_body));
         }
-        catch(\Exception $e){
+        catch(\Throwable $e){
             \Log::error("Mail error in password_reset_email: " . $e->getMessage());
         }
     }
@@ -176,7 +176,7 @@ class EmailUtility
         try{
             Notification::send($user, new EmailNotification($subject, $email_body));
         }
-        catch(\Exception $e){
+        catch(\Throwable $e){
             \Log::error("Mail error in email_on_request: " . $e->getMessage());
         }
     }
@@ -192,7 +192,7 @@ class EmailUtility
         try{
             Notification::send($notify_user, new EmailNotification($subject, $email_body));
         }
-        catch(\Exception $e){
+        catch(\Throwable $e){
             \Log::error("Mail error in email_on_accept_request: " . $e->getMessage());
         }
     }
