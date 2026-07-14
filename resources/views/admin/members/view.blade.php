@@ -146,7 +146,6 @@
                                 <th>{{ translate('Institution') }}</th>
                                 <th>{{ translate('Start') }}</th>
                                 <th>{{ translate('End') }}</th>
-                                <th>{{ translate('Status') }}</th>
                             </tr>
 
                             @foreach ($educations as $key => $education)
@@ -155,14 +154,6 @@
                                     <td>{{ $education->institution }}</td>
                                     <td>{{ $education->start }}</td>
                                     <td>{{ $education->end }}</td>
-                                    <td>
-                                        @if ($education->present == 1)
-                                            <span class="badge badge-inline badge-success">{{ translate('Active') }}</span>
-                                        @else
-                                            <span
-                                                class="badge badge-inline badge-danger">{{ translate('Deactive') }}</span>
-                                        @endif
-                                    </td>
                                 </tr>
                             @endforeach
                         </table>
@@ -183,7 +174,6 @@
                                 <th>{{ translate('company') }}</th>
                                 <th>{{ translate('Start') }}</th>
                                 <th>{{ translate('End') }}</th>
-                                <th>{{ translate('Status') }}</th>
                             </tr>
                             @foreach ($careers as $key => $career)
                                 <tr>
@@ -191,14 +181,6 @@
                                     <td>{{ $career->company }}</td>
                                     <td>{{ $career->start }}</td>
                                     <td>{{ $career->end }}</td>
-                                    <td>
-                                        @if ($career->present == 1)
-                                            <span class="badge badge-inline badge-success">{{ translate('Active') }}</span>
-                                        @else
-                                            <span
-                                                class="badge badge-inline badge-danger">{{ translate('Deactive') }}</span>
-                                        @endif
-                                    </td>
                                 </tr>
                             @endforeach
 
