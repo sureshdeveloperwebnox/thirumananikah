@@ -120,22 +120,28 @@
 
             <div class="form-group row">
                 <div class="col-md-12">
-                    <label for="photo" >{{translate('Photo')}} <small>(800x800)</small>
+                    <label for="photo">{{translate('Photo')}} <small>(800x800)</small>
                         @if(auth()->user()->photo != null && auth()->user()->photo_approved == 0)
-                        <small class="text-danger">({{ translate('Pending for Admin Approval.') }})</small>
+                            <small class="text-danger">({{ translate('Pending for Admin Approval.') }})</small>
                         @elseif(auth()->user()->photo != null && auth()->user()->photo_approved == 1)
-                            <small class="text-danger">({{ translate('Approved.') }})</small>
-                        @endif</label>
-                    <div class="input-group" id="profile-photo-uploader-container" style="cursor: pointer;">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text font-weight-medium">{{ translate('Browse')}}</div>
-                        </div>
-                        <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                            <small class="text-success">({{ translate('Approved.') }})</small>
+                        @endif
+                    </label>
+                    <div class="d-flex align-items-center" style="gap: 10px;">
+                        <button type="button" class="btn btn-outline-secondary" id="profile-photo-uploader-container" style="cursor: pointer; white-space: nowrap;">
+                            <i class="la la-upload mr-1"></i> {{ translate('Choose File') }}
+                        </button>
+                        <span class="file-amount text-muted" id="profile-photo-file-label">
+                            @if($member->photo)
+                                {{ translate('1 File selected') }}
+                            @else
+                                {{ translate('No file chosen') }}
+                            @endif
+                        </span>
                         <input type="hidden" name="photo" id="profile-photo-hidden-input" value="{{ $member->photo }}">
                     </div>
                     <input type="file" id="profile-photo-file-input" style="display: none;" accept="image/*">
-                    <div class="file-preview box sm" id="profile-photo-preview-container">
-                    </div>
+                    <div class="file-preview box sm mt-2" id="profile-photo-preview-container"></div>
                 </div>
             </div>
             

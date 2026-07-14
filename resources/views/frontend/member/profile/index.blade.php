@@ -569,7 +569,7 @@
         var fileInput = $('#profile-photo-file-input');
         var hiddenInput = $('#profile-photo-hidden-input');
         var previewContainer = $('#profile-photo-preview-container');
-        var fileAmount = uploaderContainer.find('.file-amount');
+        var fileAmount = $('#profile-photo-file-label');
 
         if (uploaderContainer.length > 0) {
             uploaderContainer.on('click', function() {
@@ -592,7 +592,7 @@
         function uploadProfilePhoto(file) {
             // Set loading state
             fileAmount.text('{{ translate("Uploading...") }}');
-            uploaderContainer.css('pointer-events', 'none');
+            uploaderContainer.prop('disabled', true);
             previewContainer.html('<div class="text-center py-2"><div class="spinner-border spinner-border-sm text-primary" role="status"></div></div>');
 
             var formData = new FormData();
@@ -625,7 +625,7 @@
                     AIZ.plugins.notify('danger', errorMsg);
                 },
                 complete: function() {
-                    uploaderContainer.css('pointer-events', 'auto');
+                    uploaderContainer.prop('disabled', false);
                     fileInput.val('');
                 }
             });
@@ -646,11 +646,11 @@
                         fileAmount.text('1 {{ translate("File selected") }}');
                         renderPreview(file.id, fileUrl, file.file_original_name, file.extension, file.file_size);
                     } else {
-                        fileAmount.text('{{ translate("Choose File") }}');
+                        fileAmount.text('{{ translate("No file chosen") }}');
                     }
                 },
                 error: function() {
-                    fileAmount.text('{{ translate("Choose File") }}');
+                    fileAmount.text('{{ translate("No file chosen") }}');
                 }
             });
         }
@@ -688,7 +688,7 @@
 
         function resetUploader() {
             hiddenInput.val('');
-            fileAmount.text('{{ translate("Choose File") }}');
+            fileAmount.text('{{ translate("No file chosen") }}');
             previewContainer.html('');
             fileInput.val('');
         }
