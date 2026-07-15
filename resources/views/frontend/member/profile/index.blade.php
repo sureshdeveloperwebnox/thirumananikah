@@ -590,10 +590,16 @@
         }
 
         function uploadProfilePhoto(file) {
-            // Set loading state
-            fileAmount.text('{{ translate("Uploading...") }}');
+            // Show local preview immediately using browser object URL (no server path needed)
+            var localUrl = URL.createObjectURL(file);
+            var originalName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
+            var extension = file.name.split('.').pop();
+            var fileSize = file.size;
+            fileAmount.text('1 {{ translate("File selected") }}');
+            renderPreview('_local', localUrl, originalName, extension, fileSize);
+
+            // Set loading indicator on the button
             uploaderContainer.prop('disabled', true);
-            previewContainer.html('<div class="text-center py-2"><div class="spinner-border spinner-border-sm text-primary" role="status"></div></div>');
 
             var formData = new FormData();
             formData.append('photo_file', file);
@@ -608,9 +614,30 @@
                 success: function(response) {
                     if (response.success) {
                         hiddenInput.val(response.id);
-                        fileAmount.text('1 {{ translate("File selected") }}');
-                        renderPreview(response.id, response.url, response.file_original_name, response.extension, response.file_size);
-                        AIZ.plugins.notify('success', response.message || '{{ translate("Image uploaded successfully.") }}');
+                        // Update preview data-id so the remove button works correctly
+                        previewContainer.find('.file-preview-item').attr('data-id', response.id);
+
+                        // Immediately save the photo to the user profile
+                        $.ajax({
+                            url: '{{ route("member.avatar_update") }}',
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                upload_id: response.id
+                            },
+                            success: function(saveResponse) {
+                                if (saveResponse.success) {
+                                    // Update sidebar and header profile images with local preview
+                                    $('.sidebar-avatar-img, .header-avatar-img').attr('src', localUrl);
+                                    AIZ.plugins.notify('success', saveResponse.message || '{{ translate("Photo updated successfully.") }}');
+                                } else {
+                                    AIZ.plugins.notify('danger', saveResponse.message || '{{ translate("Failed to update photo.") }}');
+                                }
+                            },
+                            error: function() {
+                                AIZ.plugins.notify('danger', '{{ translate("Photo upload saved but could not update profile. Please submit the form.") }}');
+                            }
+                        });
                     } else {
                         resetUploader();
                         AIZ.plugins.notify('danger', response.message || '{{ translate("Upload failed.") }}');
@@ -660,15 +687,15 @@
             
             var html = 
                 '<div class="d-flex justify-content-between align-items-center mt-2 file-preview-item" data-id="' + id + '" title="' + originalName + '.' + extension + '">' +
-                    '<div class="align-items-center align-self-stretch d-flex justify-content-center thumb">' +
-                        '<img src="' + url + '" class="img-fit">' +
+                    '<div class="align-items-center align-self-stretch d-flex justify-content-center thumb" style="width:60px;height:60px;min-width:60px;overflow:hidden;background:#f5f5f5;border:1px solid #ddd;border-radius:4px;">' +
+                        '<img src="' + url + '" style="width:60px;height:60px;object-fit:cover;display:block;" onerror="this.style.display=\'none\'">' +
                     '</div>' +
-                    '<div class="col body">' +
-                        '<h6 class="d-flex">' +
-                            '<span class="text-truncate title">' + originalName + '</span>' +
+                    '<div class="col body" style="padding-left:10px;">' +
+                        '<h6 class="d-flex mb-0">' +
+                            '<span class="text-truncate title" style="max-width:150px;">' + originalName + '</span>' +
                             '<span class="ext">.' + extension + '</span>' +
                         '</h6>' +
-                        '<p>' + sizeStr + '</p>' +
+                        '<p class="mb-0 text-muted small">' + sizeStr + '</p>' +
                     '</div>' +
                     '<div class="remove">' +
                         '<button class="btn btn-sm btn-link remove-profile-photo" type="button">' +
